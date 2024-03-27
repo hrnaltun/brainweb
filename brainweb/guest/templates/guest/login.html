@@ -1,0 +1,25 @@
+{% extends "loginbase.html"%}
+{% load static %}
+{% block header %}
+    {% include "guest/loginheader.html" %}
+{% endblock %}
+{% block content %}
+<section class="container">
+    <div class="login-container">
+        <div class="form-container">
+            <img src="{% static 'guest/img/logo.png' %}" alt="Logo" class="logo" />
+            <form>
+                <input type="text" placeholder="e-mail" />
+                <input type="password" placeholder="şifre" />
+                <button class="opacity">Giriş Yap</button>
+            </form>
+            <div class="register-forget opacity">
+                <a href="">Kayıt Ol</a>
+                <a href="">Şifremi Unuttum</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

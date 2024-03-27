@@ -1,45 +1,10 @@
 {% load static %}
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-    }
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background-color: #868484;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-    }
-
-    /* Koyu gri arka plan */
-    .left {
-        display: flex;
-        align-items: center;
-    }
-
-    .left a {
-        text-decoration: none;
-        color: #fff; /* Beyaz renk */   
-        margin-right: 50px; /* Diğer yazıların sağ boşluğu artırıldı */
-    }
-
-    .left a:hover {
-        text-decoration: underline;
-    }
-    .left img {
-        margin-right: 1300px; /* Fotoğrafın sağ boşluğu */
-    }
-</style>
-
 
     <div class="left">
-      <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-      <a href="#">Anasayfa</a>
+      <img src="{% static 'guest/img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
+      <a href="{% url 'index' %}">Anasayfa</a>
       <a href="#">Hizmetler</a>
-      <a href="#">Giriş Yap</a>
+      <a href="{% url 'login' %}">Giriş Yap</a>
 
     </div>
  
