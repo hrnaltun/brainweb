@@ -1,0 +1,35 @@
+{% load static %}  
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şifremi Unuttum</title>
+    <link rel="stylesheet" href="brainweb/brainweb/guest/static/css/forgotstyle.css">
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="home-link">
+        <img src="{% static 'guest/img/logo.png' %}" alt="Logo" class="logo" />
+    </a>
+    </header>
+    <div class="container">
+        <main>
+            <h1>Şifremi Unuttum</h1>
+            <p>Şifrenizi sıfırlamak için lütfen e-posta adresinizi girin.</p>
+            
+            <form action="#" method="POST" class="forgot-password-form">
+                <div class="form-group">
+                    <label for="email">E-posta:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <button type="submit">Gönder</button>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>
