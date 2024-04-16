@@ -1,0 +1,267 @@
+{% load static %}
+{% include "guest/header.html" %}
+
+
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #0000; /* Arka plan rengi */
+      background-image: url(''); /* Arka plan resmi */
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 250px; /* 250px'den 100px'ye düşürüldü */
+      margin-top: 50px; /* Yukarıdaki alanı 50px'e ayarlandı */
+      
+    }
+    .box {
+      flex-basis: calc(33.33% - 100px); /* 33.33% genişlikte ve aralarda 20px boşluk bırakır */
+      margin: 30px;
+      text-align: center;
+      cursor: pointer; /* Tıklanabilirlik */
+      transition: transform 0.3s ease; /* Animasyon */
+    }
+    .box:hover {
+      transform: scale(1.05); /* Büyütme animasyonu */
+    }
+
+    .kutu{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 100px; /* 250px'den 100px'ye düşürüldü */
+      margin-top: 50px; /* Yukarıdaki alanı 50px'e ayarlandı */
+      background-color: #f2f2f2;
+      border-radius: 10px; /* Kenar yuvarlaklığı */ 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+      
+    }
+
+
+
+    
+
+    .image {
+      display: block;
+      margin: 0 auto;
+      margin-top: 100px;
+      border-radius: 10px;
+      max-width: 30%;
+      max-height:30%;
+      height: auto; 
+      z-index: -1;
+    }
+    
+
+    
+
+    .caption {
+      margin-top: 40px;
+      text-align: center; /* Metni ortala */
+      
+    }
+    
+
+    .caption h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    
+
+    
+    
+    .background-image {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: -1; /* Arka plan resminin butonlar üzerinde olmasını sağlar */
+  }
+
+
+
+
+  .conta{
+    display: flex; /* Flex konteynırü */
+    
+  }
+  
+  .bo {
+    flex: 1; /* Eşit genişlik */
+    padding: 20px;
+    margin: 10px;
+    background-color: #fffff;
+    border: 1px solid #ccc;
+    text-align: center;
+    transition: transform 0.3s ease; /* Animasyon */
+    max-height: 30%;
+  }
+
+  .bo:hover {
+    transform: scale(1.05); /* Büyütme animasyonu */
+  }
+  
+  .bo img {
+    max-width: 150px; /* Resimlerin maksimum genişliği */
+    height: 150px;
+    display: block; /* Resmi blok öğe olarak ayarlar */
+    margin: 0 auto 10px; /* Resim altında boşluk bırakır ve resmi ortalar */
+  }
+  
+  .bo h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .bo p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+   
+  </style>
+</head>
+
+<body>
+
+ 
+
+ 
+ 
+  
+  <div class="container">
+    <div class="logo"> 
+          <!-- Logo ekle -->
+          <img src="{% static 'img\logo.png' %}"style="margin-left: 60px;"  alt="Logo"> 
+          <h2>MRI beyin analizi için açık erişim platformu</h1>      
+      </div>     
+  </div>
+
+
+  <div class="kutu">
+    <div class="caption">
+      
+      <h1 style="margin-top: -50px;">MİSYONUMUZ</h1>
+
+       
+        <p>Brainweb platformu çevrimiçi açık bir MRI beyin hacim ölçümü sistemidir.Misyonumuz, dünyanın her yerindeki araştırmacıların,<br> karmaşık yazılım paketlerini öğrenmeye veya yerel sitelerinde pahalı hesaplama altyapılarına sahip olmaya gerek kalmadan, MRI </br>verilerinden otomatik olarak hacimsel beyin bilgisi elde etmelerine yardımcı olmaktır.</p>
+        <p> </p>
+        <p>Brainweb platformu tam otomatik olarak çalışmakta olup herhangi bir insan müdahalesine gerek kalmadan birkaç dakika içerisinde<br> beyin analizi yapabilmektedir. Şu anda farklı beyin alanlarını ve hastalıklarını analiz eden boru hatları kurduk.</p>
+
+        <p>Bu çevrimiçi platform, ticari olmayan ve tıbbi olmayan amaçlar için ücretsizdir (yalnızca araştırma).</p>
+        <p> İşbirliği arıyoruz, lütfen bizimle herhangi bir geri bildirimde bulunarak iletişime geçin Team@brainweb.net</p> 
+        <p> Platformdaki veya işlem hatlarındaki bir sorunu bildirmek için lütfen bu Hata Raporu sayfasını kullanın.</p>  
+        <p> Brainweb yolculuğunuza başlamadan önce lütfen bu Eğitimi okuyun ;-)</p>
+    </div>
+</div>
+
+<h1 style="text-align: center; margin-bottom: -350px;">Hizmetlerimiz</h1>
+  <div class="container">
+    <div class="box" onclick="window.location.href = '/beyindamar';">
+        <img class="image" src="{% static 'img\indir.png' %}" alt="Fotoğraf">
+        
+      <div class="caption">
+        <h1>Beyin damar ağacı tespiti</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+      </div>
+      
+    </div>
+
+    <div class="box" onclick="window.location.href = '/riskharitasi';">
+      <img class="image" src="{% static 'img\Damar.png' %}" alt="Fotoğraf">
+      <div class="caption">
+        <h1>Damar ağacı risk haritası</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+      </div>
+    </div>
+
+    <div class="box" onclick="window.location.href = '/beyintümör';">
+      <img class="image" src="{% static 'img\beyintümör.png' %}" alt="Fotoğraf">
+      <div class="caption">
+        <h1>Beyin tümör tespiti</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+      </div>
+    </div>
+
+    
+    <div class="box" onclick="window.location.href = '/kafatasi';">
+      <img class="image" src="{% static 'img\kafatası1.png' %}" alt="Fotoğraf">
+      <div class="caption">
+        <h1>Kafatası kalınlık haritasını çıkar</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+      </div>
+    </div>
+
+    <div class="box" onclick="window.location.href = '/stn';">
+        <img class="image" src="{% static 'img\parkinson.png' %}" alt="Fotoğraf">
+        <div class="caption">
+          <h1>STN hücre tespiti</h1>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<h1 style="text-align: center; margin-top: -100px;">Nasıl Çalışır?</h1>
+
+  <div class="conta">
+    <div class="bo">
+      <img src="{% static 'img\login.png' %}" alt="">
+      <h2>Giriş</h2>
+      <p>Öncelikle yeni kullanıcı olarak kayıt olmanız veya kayıtlı iseniz sisteme giriş yapmanız gerekmektedir. </p>
+    </div>
+    <div class="bo">
+      <img src="{% static 'img\upload.png' %}" alt="">
+      <h2>Yükleme </h2>
+      <p>İkinci olarak, sıkıştırılmış anonimleştirilmiş beyin MRI verilerinizi NIFTI formatında yükleyin.</p>
+    </div>
+    <div class="bo">
+      <img src="{% static 'img\process.png' %}" alt="">
+      <h2>İşleme </h2>
+      <p>Verileriniz yüklendikten sonra volBrain isteğinizi mümkün olan en kısa sürede işleme alacak ve sonuçları içeren bir rapor oluşturacaktır. </p>
+    </div>
+    <div class="bo">
+      <img src="{% static 'img\result.png' %}" alt="">
+      <h2>Sonuç</h2>
+      <p>Son olarak, işinizi tamamladıktan sonra sonuçlarınızı içeren PDF raporunu içeren bir e-posta alacaksınız. </p>
+    </div>
+  </div>
+
+
+             
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var backgrounds = ['{% static "img/indir1.jpg" %}']; // Arka plan resimlerinin dosya adları
+            var randomIndex = Math.floor(Math.random() * backgrounds.length); // Rastgele bir indeks seç
+            var selectedBackground = backgrounds[randomIndex]; // Seçilen arka plan resmi
+    
+            document.body.style.backgroundImage = "url('" + selectedBackground + "')"; // Seçilen arka plan resmini ayarla
+        });
+    </script>
+    
+  <script>
+    // JavaScript ile her bir kutunun tıklanabilir olmasını sağlayalım
+    const boxes = document.querySelectorAll('.box');
+    boxes.forEach(box => {
+      box.addEventListener('click', () => {
+      
+      });
+    });
+    
+
+  </script>
+</body>
+</html>
+
