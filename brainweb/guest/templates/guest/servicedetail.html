@@ -1,0 +1,55 @@
+{% load static %}
+{% include "guest/header.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyin Damar Ağacı Tespiti</title>
+    <style>
+        body {
+            background-color: #f2f2f2; /* Açık gri arkaplan */
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        img {
+            margin-top: 10px;
+        }
+        .feedback {
+            margin-top: 30px;
+        }
+        .button {
+            margin-top: 50px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Beyin Damar Ağacı Tespiti</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+        <img src="{% static 'guest\img\indir.png' %}" alt="İndir" width="50">
+        <div class="feedback">
+            <h2>Geri Bildirim</h2>
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+            <img src="{% static 'guest\img\indir.png' %}" alt="İndir" width="50">
+        </div>
+        <a href="#" class="button">Kullan</a>
+    </div>
+</body>
+</html>
+
+
+{% include "guest/footer.html" %}

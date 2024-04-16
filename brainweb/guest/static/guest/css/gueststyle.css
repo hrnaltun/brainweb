@@ -10,6 +10,7 @@ header {
     padding: 20px;
     display: flex;
     align-items: center;
+    z-index: 1;
 }
 footer {
     position: fixed;
