@@ -1,0 +1,32 @@
+{% extends "loginbase.html"%}
+{% load static %}
+{% block header %}
+{% include "account/loginheader.html" %}
+{% endblock %}
+{% block content %}
+<section class="container">
+    <div class="account-container">
+        <div class="form-container">
+            <img src="{% static '/img/logo.png' %}" alt="Logo" class="logo" />
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                {% if error %}
+                <div class="alert alert-danger">
+                    {{error}}
+                </div>
+                {% endif %}
+                <input name="email" type="text" placeholder="E-posta" />
+                <input name="password" type="password" placeholder="Şifre" />
+                <button type="submit" value="Login" class="opacity">Giriş Yap</button>
+
+            </form>
+            <div class="register-forgot opacity">
+                <a href="{% url 'register' %}">Kayıt Ol</a>
+                <a href="{% url 'forgot' %}">Şifremi Unuttum</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

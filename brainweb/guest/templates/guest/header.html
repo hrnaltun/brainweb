@@ -1,8 +1,7 @@
-{% load static %}  
-    <div class="left">
-      <img src="{% static 'guest/img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-      <a href="{% url 'index' %}">Anasayfa</a>
-      <a href="#">Hizmetler</a>
-      <a href="{% url 'login' %}">Giriş Yap</a>
-    </div>
-
+{% load static %}
+<div class="left">
+  <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
+  <a href="{% url 'index' %}">Anasayfa</a>
+  <a href="#">Hizmetler</a>
+  <a href="{% url 'login_page' %}">Giriş Yap</a>
+</div>

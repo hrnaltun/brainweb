@@ -1,0 +1,40 @@
+{% extends "loginbase.html"%}
+{% load static %}
+{% block header %}
+{% include "account/loginheader.html" %}
+{% endblock %}
+{% block content %}
+<style>
+    body {
+        background-color: white;
+    }
+    .account-container form {
+        margin-bottom:500px ;
+        margin-right: 100px;
+    }
+</style>
+
+<section class="container">
+    <div class="account-container">
+        <div class="form-container">
+            
+            <form method="POST">
+                {% csrf_token %}
+                <h1 style="margin-left: 100px;">Şifremi Unuttum</h1>
+                <div class=" required">
+                    <div class="col col-md-3 col-lg-2">
+                        <label for="mail">E-Posta</label>
+                    </div>
+                    <div class="col col-md-9 col-lg-10">
+                        <input style="background-color: #bbcfe9; width: 300px;" class="form-control" id="mail"
+                            name="mail" type="email" value="">
+                    </div>
+                </div>
+                <button style="margin-left: 110px; width: 300px; margin-top: 30px;" class="opacity">Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

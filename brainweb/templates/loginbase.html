@@ -1,22 +1,25 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'guest/css/loginstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'account/css/loginstyle.css' %}">
     <title>BrainWeb</title>
 </head>
+
 <body>
     <header>
         {% block header %}
-            <!-- Header content -->
+        <!-- Header content -->
         {% endblock %}
     </header>
     <main>
         {% block content %}
-            <!-- Content -->
+        <!-- Content -->
         {% endblock %}
     </main>
 </body>
+
 </html>

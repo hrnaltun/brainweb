@@ -4,5 +4,5 @@ from guest import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('guest/login', views.login, name='login'),
+    path('guest/login', views.login_page, name='login_page'),
 ]
