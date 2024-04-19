@@ -58,9 +58,10 @@
     <header>
         <div class="left">
             <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-            <a href="{% url 'index' %}">Anasayfa</a>
+            <a href="{% url 'index_account' %}">Anasayfa</a>
             <a href="">Yükleme</a>
             <a href="">Sonuçlar</a>
+            <a href="{% url 'profile' %}">Profil</a>
             <a href="">Çıkış Yap</a>
         </div>
     </header>
@@ -78,7 +79,7 @@
         <div class="content" >
             <div id="profileForm" class="profile-form"  >
                 <h2>Profil Düzenleme</h2>
-                <form>
+                <form method="post" action="{% url 'update_profile' %}">
                     {% csrf_token %}
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" value="{{ user.email }}" required><br><br>
@@ -86,25 +87,31 @@
                     <input type="text" id="fname" name="fname" value="{{ user.first_name }}" required><br><br>
                     <label for="lname">Soyisim:</label>
                     <input type="text" id="lname" name="lname" value="{{ user.last_name }}" required><br><br>
-                    <input type="button" value="Profil Güncelle" onclick="updateProfile()">
+                    <button type="submit" class="button">Profil Güncelle</button>
                 </form>
             </div>
             <div id="userDetails" class="user-details" style="display:none;">
                 <h2>Kullanıcı Oturum Ayrıntıları</h2>
-                <p><strong>İsim:</strong> John</p>
-                <p><strong>Soyisim:</strong> Doe</p>
-                <p><strong>Rol:</strong> Kullanıcı</p>
-                <p><strong>Son Ziyaret:</strong> 28 Mart 2024</p>
+                <p><strong>İsim:</strong> {{ user.first_name }}</p>
+                <p><strong>Soyisim:</strong> {{ user.last_name }}</p>
+                {% if user.is_staff %}
+                    <p><strong>Rol:</strong> Admin </p>
+                {% else %}
+                    <p><strong>Rol:</strong> Kullanıcı</p>
+                {% endif %}
                 <p><strong>Günlük Maksimum Yükleme Limiti:</strong> 10</p>
                 <p><strong>Bugünkü Yüklemelerin Sayısı:</strong> 5</p>
             </div>
             <div id="changePasswordForm" class="change-password-form" style="display:none;">
                 <h2>Şifre Değiştirme</h2>
+                <form method="post" action="{% url 'change_password' %}">
+                    {% csrf_token %}
                 <label for="newPassword">Yeni Şifre:</label>
                 <input type="password" id="newPassword" name="newPassword" required><br><br>
                 <label for="confirmPassword">Şifre Onayla:</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
-                <input type="button" value="Şifre Değiştir" onclick="changePassword()">
+                <button type="submit" class="button">Şifre Değiştir</button>
+            </form>
             </div>
             <div id="deleteAccountForm" class="delete-account-form" style="display:none;">
                 <h2>Hesabı Silme</h2>
@@ -120,9 +127,10 @@
     <footer>
         <div class="left" style="height: 10px;">
             <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-            <a href="{% url 'index' %}">Anasayfa</a>
+            <a href="{% url 'index_account' %}">Anasayfa</a>
             <a href="">Yükleme</a>
             <a href="">Sonuçlar</a>
+            <a href="{% url 'profile' %}">Profil</a>
             <a href="">Çıkış Yap</a>
 
         </div>

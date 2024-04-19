@@ -127,3 +127,21 @@ body {
   height: 50vh;
 }
 
+
+.profile-form button, .change-password-form button, .delete-account-form button {
+  width: 33%;
+  padding: 5px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-top: 10px; /* Butonlar arasında boşluk bırakmak için */
+  margin-right: auto; /* Sağdan boşluk */
+  margin-left: 240px; /* Soldan boşluk */
+  text-align: center; /* Metni ortala */
+}
+
+.profile-form button:hover, .change-password-form button:hover, .delete-account-form button:hover {
+  background-color: #2980b9;
+}
