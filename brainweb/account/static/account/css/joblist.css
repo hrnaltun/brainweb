@@ -1,0 +1,149 @@
+dy {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Sol üst köşeye hizala */
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #666;
+  }
+
+  /* Font Awesome ikonlarının boyutunu ve renkini ayarla */
+.action-button i {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  /* Linklerin üzerine gelindiğinde rengini değiştir */
+  .action-button:hover {
+    color: #2196F3;
+  }
+  
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar label {
+    margin-right: 10px;
+  }
+  
+  .search-bar input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .job-list {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .job-list th,
+  .job-list td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .job-list th {
+    background-color: #f5f5f5;
+  }
+  
+  .status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .status.success {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .status.pending {
+    background-color: #FFCC80;
+    color: black;
+  }
+  
+  .action-button {
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination a {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-right: 5px;
+  }
+  
+  .pagination .current {
+    font-weight: bold;
+    background-color: #2196F3; /* Mavi renk */
+    color: white; /* Beyaz renk yazı */
+    padding: 5px 10px; /* Kutunun içerisindeki içeriği hizalamak için padding */
+    border-radius: 5px; /* Yuvarlatılmış köşeler */
+  }
+  
+  .action-button img {
+    width: 20px; /* Logonun genişliği */
+    height: 20px; /* Logonun yüksekliği */ 
+    vertical-align: middle; /* Dikey hizalamayı ortala */
+    margin-right: 0px; /* Logolar arasında bir boşluk bırak */
+  }
+
+  /* Her bir buton için farklı renkler */
+.editor_pdf {
+  background-color: #ffffff; /* Kırmızı */
+  color: rgb(255, 0, 0);
+}
+
+.editor_csv {
+  background-color: #ffffff; /* Mavi */
+  color: rgb(0, 68, 255);
+}
+
+.action-button:active span {
+  color: transparent; /* Sembolün rengini transparent yap */
+  text-shadow: 0 0 0 #fff; /* Sembolün etrafına beyaz bir gölge ekleyerek dolgu yapısı oluştur */
+}

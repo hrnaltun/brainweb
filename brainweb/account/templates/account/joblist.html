@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'account/css/joblist.css'%}">
+</head>
+<body>
+  <div class="container">
+    <h1>Job List</h1>
+    <p>You have 30 days to download your reports, after that period the files will be deleted forever</p>
+    <div class="search-bar">
+      <label for="search">Search:</label>
+      <input type="text" id="search" name="search">
+    </div>
+    <table class="job-list">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1667854</td>
+          <td>2024-08-21 21:57</td>
+          <td><span class="status success">Success</span></td>
+          <td>
+            <button type="button" class="btn btn-sm btn-outline-danger editor_pdf" data-toggle="tooltip" title="" data-original-title="Download PDF Report File"><span class="fa fa-file-pdf"></span></button>
+            <button type="button" class="btn btn-sm btn-outline-success editor_csv" data-toggle="tooltip" title="" data-original-title="Download CSV Report File"><span class="fa fa-file-csv"></span></button>
+          </td>
+        </tr>
+        <tr>
+          <td>667847</td>
+          <td>2024-03-22</td>
+          <td><span class="status pending">Pending</span></td>
+          <td>
+            <button type="button" class="btn btn-sm btn-outline-danger editor_pdf" data-toggle="tooltip" title="" data-original-title="Download PDF Report File"><span class="fa fa-file-pdf"></span></button>
+            <button type="button" class="btn btn-sm btn-outline-success editor_csv" data-toggle="tooltip" title="" data-original-title="Download CSV Report File"><span class="fa fa-file-csv"></span></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <a href="#" class="previous">Previous</a>
+      <span class="current">1</span>
+      <a href="#" class="next">Next</a>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
