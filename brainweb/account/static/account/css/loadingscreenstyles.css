@@ -1,0 +1,169 @@
+.container {
+    width: 80%;
+    max-width: 1000px;
+    border: 5px solid #ccc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* İçeriği dikey olarak hizala */
+    align-items: center; /* İçeriği dikey olarak ortala */
+    position: relative; /* Container'ı göreceli pozisyona al */
+    margin: 0 auto; /* Sayfayı ortala */
+    z-index: 1; /* Container'ı diğer içeriklerin üstüne çıkar */
+    border-radius: 10px; /* Köşeleri yuvarlak yap */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Hafif bir gölge */
+    transition: box-shadow 0.3s; /* Geçiş efekti */
+}
+
+.pipeline-buttons {
+    display: flex;
+    flex-wrap: center;
+    justify-content: center; /* Butonları yatayda ortala */
+    gap: 20px;
+    margin-top: 20px;
+}
+.pipeline-button {
+    flex: 0 0 calc(20% - 20px); /* 5 kutucuk için %20 genişlik */
+    max-width: 150px; /* Maksimum genişlik */
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative; /* Dosya yükleme alanını yerleştirmek için */
+}
+
+.pipeline-button img {
+    width: 50px; /* Sabit genişlik */
+    height: 50px; /* Sabit yükseklik */
+    object-fit: cover; /* İmajın boyutunu koru, ancak kesme yapılabilir */
+    margin-bottom: 10px;
+}
+
+
+.pipeline-button span {
+    display: block;
+    font-weight: bold;
+}
+
+.content {
+    margin-top: 20px; /* Container'dan aşağı kaydır */
+}
+
+#dynamic-content {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #f9f9f9;
+    text-align: center;
+    z-index: 0;
+    transition: all 0.3s; /* Geçiş efekti */
+}
+
+.file-upload-label {
+    cursor: pointer;
+    padding: 5px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.file-upload-label:hover {
+    background-color: #0056b3;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0 !important;
+    border: 0 !important;
+    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden;
+}
+
+.file-upload-container {
+    margin-top: 20px; /* Üstten 20px boşluk bırak */
+    margin-bottom: 20px; /* Altından 20px boşluk bırak */
+    padding: 10px; /* İçeriklerle container arasında boşluk bırak */
+}
+
+.submit-button-container {
+    text-align: center;
+}
+
+
+/* Dosya seçilmediğinde dosya adını görünür yap */
+input[type="file"].visually-hidden + label + .file-name {
+    display: block;
+}
+.file-upload-label {
+    cursor: pointer;
+    padding: 5px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+input[type="file"].visually-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100px; /* Sabit genişlik */
+    height: 1000px; /* Sabit yükseklik */
+    z-index: 2;
+}
+
+.file-name {
+    display: block;
+    font-size: 16px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    background-color: #f9f9f9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#submit-button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Mavi renk */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Yuvarlak köşeler */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Hafif bir gölge */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Düğme üzerine gelince geçiş efekti */
+}
+
+#submit-button:hover {
+    background-color: #0056b3; /* Daha koyu mavi renk */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Daha belirgin bir gölge */
+}
+
+#submit-button:active {
+    transform: scale(0.95); /* Tıklama sırasında küçük bir animasyon */
+}
+
+.container:hosver {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Daha belirgin bir gölge */
+}
+.hidden {
+    display: none;
+}
+
+.pipeline-button:active {
+    transform: scale(0.95); /* Küçük bir ölçeklendirme efekti */
+}
+
+.pipeline-button:active {
+    filter: brightness(1.2); /* Renklendirme canlılığını artır */
+}

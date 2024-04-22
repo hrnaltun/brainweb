@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boru Hattı Seçimi</title>
+    <link rel="stylesheet" href="loading_screen.css">
+</head>
+<body>   
+    <div class="container">
+        <h1>Boru Hattı Seçimi</h1>
+        <div class="pipeline-buttons">
+            <div class="pipeline-button" data-pipeline="brain">
+                <img src="beyintümör1.png" alt="Beyin damar ağacı tespiti">
+                <span>Beyin damar ağacı tespiti</span>
+            </div>
+            <div class="pipeline-button" data-pipeline="cerebellum">
+                <img src="Damar.png" alt="Damar ağacı risk haritası">
+                <span>Damar ağacı risk haritası</span>
+            </div>
+            <div class="pipeline-button" data-pipeline="hippocampus">
+                <img src="indir.png" alt="Beyin tümör tespiti">
+                <span>Beyin tümör tespiti</span>
+            </div>
+            <div class="pipeline-button" data-pipeline="lesions">
+                <img src="kafatası1.png" alt="Beyin tümör tespiti">
+                <span>Beyin tümör tespiti</span>
+            </div>
+            <div class="pipeline-button" data-pipeline="nuclei">
+                <img src="parkinson.png" alt="STN hücre tespiti">
+                <span>STN hücre tespiti</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div id="dynamic-content" class="hidden">
+            <p id="description">Açıklama metni buraya gelecek</p>
+            <div class="file-upload-container">
+                <label for="file-upload" class="file-upload-label">Dosya Seç</label>
+                <input type="file" id="file-upload" class="visually-hidden">
+                <span id="file-name" class="file-name"></span>
+            </div>
+            <button id="submit-button">Gönder</button>
+        </div>            
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
