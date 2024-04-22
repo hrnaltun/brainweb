@@ -20,7 +20,6 @@ function showUserDetails() {
     updateSelectedLinkStyle("userDetailsLink");
 }
 
-
 function showChangePasswordForm() {
     document.getElementById("profileForm").style.display = "none";
     document.getElementById("userDetails").style.display = "none";
@@ -43,29 +42,4 @@ function updateSelectedLinkStyle(selectedLinkId) {
         link.classList.remove("active");
     });
     document.getElementById(selectedLinkId).classList.add("active");
-}
-
-function updateProfile() {
-    var email = document.getElementById("email").value;
-    var fname = document.getElementById("fname").value;
-    var lname = document.getElementById("lname").value;
-
-    // Profil güncelleme işlemleri burada yapılabilir
-    console.log("E-mail: " + email + ", İsim: " + fname + ", Soyisim: " + lname);
-}
-
-function changePassword() {
-    var newPassword = document.getElementById("newPassword").value;
-    var confirmPassword = document.getElementById("confirmPassword").value;
-
-    // Şifre değiştirme işlemleri burada yapılabilir
-    console.log("Yeni Şifre: " + newPassword + ", Şifre Onay: " + confirmPassword);
-}
-
-function deleteAccount() {
-    var deleteEmail = document.getElementById("deleteEmail").value;
-    var deletePassword = document.getElementById("deletePassword").value;
-
-    // Hesap silme işlemleri burada yapılabilir
-    console.log("Silinen E-mail: " + deleteEmail + ", Silinen Şifre: " + deletePassword);
 }

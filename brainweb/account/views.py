@@ -1,12 +1,10 @@
-
 from django.shortcuts import redirect, render,get_object_or_404
-from django.contrib.auth import authenticate,login,update_session_auth_hash
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from guest.models import Servis
 from django.contrib import messages
-from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse
 
 # Create your views here.
@@ -101,14 +99,42 @@ def update_profile(request):
 
 @login_required
 def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Oturumu güncelle, şifre değiştiği için
-            messages.success(request, 'Şifreniz başarıyla güncellendi.')
-            return redirect(reverse('profile'))  # profil sayfasına yönlendir
-    else:
-        form = PasswordChangeForm(user=request.user)
-    
-    return render(request, 'account/profile.html', {'form': form})
+    if request.method == "POST":
+        new_password = request.POST.get('newPassword')
+        confirm_password = request.POST.get('confirmPassword')
+
+        if new_password == confirm_password:
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+
+            # Kullanıcıyı oturum kapattıktan sonra login sayfasına yönlendirme
+            messages.success(request, "Şifre başarıyla değiştirildi.")
+            logout(request)  # Oturum kapat
+            return redirect(reverse('login'))  # Login sayfasına yönlendirme
+
+        else:
+            messages.error(request, "Şifreler eşleşmiyor. Lütfen tekrar deneyin.")
+
+    return render(request, 'account/profile.html')
+
+
+def delete_account(request):
+    if request.method == "POST":
+        email = request.POST.get('deleteEmail')
+        password = request.POST.get('deletePassword')
+
+        # Kullanıcıyı kimlik doğrulama ile kontrol et
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            # Kullanıcı doğrulandıysa hesabı sil
+            user.delete()
+            messages.success(request, "Hesabınız başarıyla silindi.")
+            return redirect(reverse('login'))   # Ana sayfaya yönlendirme
+        else:
+            # Kimlik doğrulama başarısız olduysa hata mesajı göster
+            messages.error(request, "E-posta veya şifre yanlış.")
+
+    # Hesabı silme formunu yeniden göster
+    return render(request, 'account/profile.html')
