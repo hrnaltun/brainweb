@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from guest.models import Servis
 from django.contrib import messages
 from django.urls import reverse
+from django.http import JsonResponse
 
 # Create your views here.
 def register_request(request):
@@ -52,7 +53,8 @@ def login_request(request):
 
 
 def logout_request(request):
-    return redirect("index")
+    logout(request)  # Oturum kapat
+    return redirect('login')
 
 def forgot_request(request):
     return render(request,"account/forgot.html")
@@ -138,3 +140,21 @@ def delete_account(request):
 
     # Hesabı silme formunu yeniden göster
     return render(request, 'account/profile.html')
+
+def submit_page(request):
+        servisler = Servis.objects.all().order_by('sayfadaki_sırası')
+        return render(request,'account/submit.html', {'servisler': servisler})
+
+def get_service_detail(request, service_id):
+    # `get_object_or_404` ile servis nesnesini alın
+    servis = get_object_or_404(Servis, id=service_id)
+
+    # Verileri JSON formatında döndürün
+    data = {
+        'adı': servis.adı,
+        'açıklama': servis.açıklama_kısa,
+        'resim': servis.resim.url if hasattr(servis, 'resim') and servis.resim else None,
+    }
+    return JsonResponse(data)  # Servis bulunduğunda JSON yanıtını döndürün
+def joblist(request):
+    return render(request,"account/joblist.html")

@@ -1,15 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Job List</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'account/css/joblist.css'%}">
+  <link rel="stylesheet" href="{% static 'account/css/jobliststyles.css'%}">
 </head>
 <body>
-  <div class="container">
+  <header>
+    {% include "account/accountheader.html" %}
+</header>
+  <div class="container" style="margin-top: 100px;">
     <h1>Job List</h1>
     <p>You have 30 days to download your reports, after that period the files will be deleted forever</p>
     <div class="search-bar">
@@ -53,5 +56,8 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <footer>
+    {% include "account/accountfooter.html" %}
+</footer>
 </body>
 </html>

@@ -1,4 +1,4 @@
-dy {
+body{
     font-family: sans-serif;
     margin: 0;
     padding: 0;
@@ -146,4 +146,47 @@ dy {
 .action-button:active span {
   color: transparent; /* Sembolün rengini transparent yap */
   text-shadow: 0 0 0 #fff; /* Sembolün etrafına beyaz bir gölge ekleyerek dolgu yapısı oluştur */
+}
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #29475f;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #5e5e5e;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* Koyu gri arka plan */
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.left a {
+  text-decoration: none;
+  color: #fff;
+  /* Beyaz renk */
+  margin-right: 50px;
+  /* Diğer yazıların sağ boşluğu artırıldı */
+}
+
+.left a:hover {
+  text-decoration: underline;
+}
+
+.left img {
+  margin-right: 1300px;
+  /* Fotoğrafın sağ boşluğu */
 }

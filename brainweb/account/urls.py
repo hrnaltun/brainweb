@@ -13,4 +13,7 @@ urlpatterns = [
     path('profile/edit/', views.update_profile, name='update_profile'),
     path('profile/change-password/', views.change_password, name='change_password'),
     path('profile/delete-account/', views.delete_account, name='delete_account'),
+    path('account/submit', views.submit_page, name='submit_page'),
+    path('service/<int:service_id>/', views.get_service_detail, name='service_detail'),
+    path('joblist',views.joblist,name="joblist")
 ]
