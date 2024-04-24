@@ -108,13 +108,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+# Dil ve saat dilimi ayarları
+LANGUAGE_CODE = 'tr'  # Türkçe dil kodu
+TIME_ZONE = 'Europe/Istanbul'
+USE_TZ = True  # Zaman dilimi kullanımı
 
 USE_I18N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

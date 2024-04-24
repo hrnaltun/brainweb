@@ -15,5 +15,6 @@ urlpatterns = [
     path('profile/delete-account/', views.delete_account, name='delete_account'),
     path('account/submit', views.submit_page, name='submit_page'),
     path('service/<int:service_id>/', views.get_service_detail, name='service_detail'),
-    path('joblist',views.joblist,name="joblist")
+    path('joblist',views.joblist,name="joblist"),
+    path('upload/', views.upload_file_view, name='upload_file'),
 ]

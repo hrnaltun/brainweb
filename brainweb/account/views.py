@@ -1,24 +1,28 @@
-from django.shortcuts import redirect, render,get_object_or_404
-from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.models import User
-from .forms import EmailAuthenticationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from guest.models import Servis
 from django.contrib import messages
 from django.urls import reverse
-from django.http import JsonResponse
+from django.contrib.auth.models import User
+from guest.models import Servis
+from .forms import EmailAuthenticationForm
+from django.utils import timezone
+from .models import UploadedFile
 
-# Create your views here.
 def register_request(request):
     if request.method == 'POST':
+        # POST isteğinde kullanıcı bilgilerinin alınması
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        email = request.POST.get('mail')
+        email = request.POST.get('email') 
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
         
+        # Şifrelerin eşleşip eşleşmediğini kontrol et
         if password != password_confirm:
             return render(request, 'register.html', {'error': 'Şifreler eşleşmiyor'})
+
         # Kullanıcıyı oluştur
         user = User.objects.create_user(username=email, email=email, password=password)
         user.first_name = first_name
@@ -33,35 +37,40 @@ def register_request(request):
 
 def login_request(request):
     if request.method == 'POST':
+        # POST isteğinde kimlik doğrulama formunu işleme
         form = EmailAuthenticationForm(request.POST)
-        if form.is_valid():
+
+        if form.is_valid():  # Formun geçerliliğini kontrol et
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('profile')  
+            if user is not None:  # Kullanıcı doğrulama başarılıysa
+                login(request, user)  # Oturum aç
+                return redirect('profile')  # Kullanıcıyı profil sayfasına yönlendir
             else:
+                # Kullanıcı doğrulama başarısızsa hata mesajı gönder
                 error = "Kullanıcı adı veya şifre yanlış."
                 return render(request, 'account/login.html', {'form': form, 'error': error})
         else:
+            # Form geçerli değilse hata mesajı gönder
             error = "Geçersiz form."
             return render(request, 'account/login.html', {'form': form, 'error': error})
     else:
-        form = EmailAuthenticationForm()
+        form = EmailAuthenticationForm()  # GET isteğinde yeni form oluştur
     return render(request, 'account/login.html', {'form': form})
 
 
 def logout_request(request):
     logout(request)  # Oturum kapat
-    return redirect('login')
+    return redirect('login')  # Login sayfasına yönlendir
 
 def forgot_request(request):
-    return render(request,"account/forgot.html")
+    return render(request, "account/forgot.html")  # Unutulan şifre sayfasını göster
+
 
 @login_required
 def profile(request):
-    # Kullanıcının adı, soyadı ve email bilgilerini almak için request.user kullanabiliriz
+    # Kullanıcının adı, soyadı ve email bilgilerini almak için request.user kullanılır
     user = request.user
     context = {
         'first_name': user.first_name,
@@ -70,19 +79,25 @@ def profile(request):
     }
     return render(request, 'account/profile.html', context)
 
+
 @login_required
 def account_index(request):
+    # Tüm servisleri sayfa sırasına göre al
     servisler = Servis.objects.all().order_by('sayfadaki_sırası')
     return render(request, 'account/accountindex.html', {'servisler': servisler})
 
+
 @login_required
 def account_detail_page(request, servis_id):
+    # Belirtilen servis kimliğine göre nesneyi al
     servis = get_object_or_404(Servis, id=servis_id)
     return render(request, 'account/accountdetail.html', {'servis': servis})
+
 
 @login_required
 def update_profile(request):
     if request.method == 'POST':
+        # POST isteğinde yeni profil bilgilerini al
         email = request.POST.get('email')
         first_name = request.POST.get('fname')
         last_name = request.POST.get('lname')
@@ -94,10 +109,12 @@ def update_profile(request):
         user.last_name = last_name
         user.save()
 
+        # Başarı mesajı göster
         messages.success(request, 'Profil başarıyla güncellendi.')
-        return redirect('profile')  # Profil sayfasına yönlendirme
+        return redirect('profile')  # Profil sayfasına yönlendir
 
     return render(request, 'profile_edit.html')  # Profil düzenleme sayfasını göster
+
 
 @login_required
 def change_password(request):
@@ -106,21 +123,24 @@ def change_password(request):
         confirm_password = request.POST.get('confirmPassword')
 
         if new_password == confirm_password:
+            # Şifreler eşleştiğinde kullanıcının şifresini değiştir
             user = request.user
             user.set_password(new_password)
             user.save()
 
-            # Kullanıcıyı oturum kapattıktan sonra login sayfasına yönlendirme
+            # Şifre değiştirildikten sonra başarı mesajı göster
             messages.success(request, "Şifre başarıyla değiştirildi.")
             logout(request)  # Oturum kapat
-            return redirect(reverse('login'))  # Login sayfasına yönlendirme
+            return redirect(reverse('login'))  # Login sayfasına yönlendir
 
         else:
+            # Şifreler eşleşmiyorsa hata mesajı göster
             messages.error(request, "Şifreler eşleşmiyor. Lütfen tekrar deneyin.")
 
-    return render(request, 'account/profile.html')
+    return render(request, 'account/profile.html')  # Profil sayfasını göster
 
 
+@login_required
 def delete_account(request):
     if request.method == "POST":
         email = request.POST.get('deleteEmail')
@@ -133,20 +153,22 @@ def delete_account(request):
             # Kullanıcı doğrulandıysa hesabı sil
             user.delete()
             messages.success(request, "Hesabınız başarıyla silindi.")
-            return redirect(reverse('login'))   # Ana sayfaya yönlendirme
+            return redirect(reverse('login'))   # Login sayfasına yönlendir
         else:
             # Kimlik doğrulama başarısız olduysa hata mesajı göster
             messages.error(request, "E-posta veya şifre yanlış.")
 
-    # Hesabı silme formunu yeniden göster
-    return render(request, 'account/profile.html')
+    return render(request, 'account/profile.html')  # Hesabı silme formunu yeniden göster
 
+@login_required
 def submit_page(request):
-        servisler = Servis.objects.all().order_by('sayfadaki_sırası')
-        return render(request,'account/submit.html', {'servisler': servisler})
+    # Tüm servisleri sayfa sırasına göre al
+    servisler = Servis.objects.all().order_by('sayfadaki_sırası')
+    return render(request, 'account/submit.html', {'servisler': servisler})
 
+@login_required
 def get_service_detail(request, service_id):
-    # `get_object_or_404` ile servis nesnesini alın
+    # Belirtilen servis kimliğine göre nesneyi alın
     servis = get_object_or_404(Servis, id=service_id)
 
     # Verileri JSON formatında döndürün
@@ -155,6 +177,30 @@ def get_service_detail(request, service_id):
         'açıklama': servis.açıklama_kısa,
         'resim': servis.resim.url if hasattr(servis, 'resim') and servis.resim else None,
     }
-    return JsonResponse(data)  # Servis bulunduğunda JSON yanıtını döndürün
+    return JsonResponse(data)  # JSON formatında yanıt döndürün
+
+@login_required
+def upload_file_view(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES.get('file')  # Dosyayı alın
+        
+        if uploaded_file:
+            # Dosyayı kaydet
+            new_uploaded_file = UploadedFile(
+                user=request.user,
+                file=uploaded_file,
+                upload_date=timezone.now(),
+                processing_status='Pending'
+            )
+            new_uploaded_file.save()
+
+            messages.success(request, f"Dosya '{uploaded_file.name}' başarıyla yüklendi.")
+            return redirect('submit_page')  # İşlem tamamlandığında yönlendir
+        else:
+            messages.error(request, "Dosya yüklenemedi. Lütfen tekrar deneyin.")
+    
+    return render(request, 'submit.html')  # Şablonun adı burada olmalı
+
+@login_required
 def joblist(request):
-    return render(request,"account/joblist.html")
+    return render(request, "account/joblist.html")  # İş listesi sayfasını göster

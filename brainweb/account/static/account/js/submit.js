@@ -20,9 +20,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     dynamicContent.classList.remove('hidden');  // Paneli görünür yapın
                     descriptionText.textContent = data.açıklama || 'Açıklama mevcut değil.';  // Açıklamayı güncelleyin
-
-                })
+                });
         });
     });
-});
 
+    // Dosya seçildiğinde dosya adını göster
+    fileUpload.addEventListener('change', function() {
+        if (fileUpload.files.length > 0) {
+            fileName.textContent = fileUpload.files[0].name;  // Seçilen dosyanın adını göster
+        }
+    });
+});
