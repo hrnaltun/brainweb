@@ -1,0 +1,172 @@
+/* Genel CSS */
+body {
+  display: flex;
+  flex-direction: column;
+  /* Dikey yönde düzenleme */
+  min-height: 100vh;
+  /* Minimum yükseklik olarak tüm ekranı kapsar */
+  margin: 0;
+}
+
+main {
+  flex-grow: 1;
+}
+
+
+header {
+  position: fixed;
+  top: 0;
+  background-color: #29475f;
+  padding: 20px;
+  z-index: 1;
+}
+
+footer {
+  bottom: 0;
+  background-color: #5e5e5e;
+  padding-bottom: 3px;
+  display: flex;
+  align-items: center;
+  z-index: 0;
+}
+
+/* Anasayfa ve Hizmetler sayfası  */
+.background-image {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: -1;
+}
+
+
+
+.how-it-works-section {
+  display: flex;
+  padding-bottom: 100px;
+}
+
+.steps {
+  flex: 1;
+  padding: 20px;
+  margin: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  text-align: center;
+  transition: transform 0.3s ease;
+  max-height: 30%;
+}
+
+.steps:hover {
+  transform: scale(1.05);
+}
+
+.steps img {
+  max-width: 150px;
+  height: 150px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.steps h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.steps p {
+  font-size: 16px;
+  color: #666;
+}
+
+.hero-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 250px;
+  margin-top: 50px;
+}
+
+.services-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 250px;
+  margin-top: 50px;
+}
+
+.services-image {
+  display: block;
+  margin: 0 auto;
+  margin-top: 100px;
+  border-radius: 10px;
+  max-width: 30%;
+  max-height: 30%;
+  height: auto;
+  z-index: -1;
+}
+
+.services-box {
+  flex-basis: calc(33.33% - 100px);
+  margin: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.services-box:hover {
+  transform: scale(1.05);
+}
+
+.mission-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 100px;
+  margin-top: 50px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.caption {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.caption h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Hizmetler detay sayfası  */
+.service-detail-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.service-detail-container img {
+  margin-top: 10px;
+}
+
+.service-detail-container .feedback {
+  margin-top: 30px;
+}
+
+.service-detail-container .button {
+  margin-top: 50px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}

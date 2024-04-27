@@ -4,55 +4,12 @@
 {% include "guest/header.html" %}
 {% endblock %}
 {% block content %}
-<style>
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 50px;
-    /* 250px'den 50px'ye düşürüldü */
-    margin-top: -50px;
-    /* Yukarıdaki alanı 50px'e ayarlandı */
-  }
 
-  .box {
-    flex-basis: calc(33.33% - 40px);
-    margin: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-
-  .box:hover {
-    transform: scale(1.05);
-  }
-
-  .image {
-    display: block;
-    margin: 0 auto;
-    margin-top: 50px;
-    /* 100px'den 50px'ye düşürüldü */
-    border-radius: 10px;
-    max-width: 110px;
-    max-height: 103px;
-  }
-
-  .caption {
-    margin-top: 20px;
-    /* 40px'den 20px'ye düşürüldü */
-    text-align: center;
-  }
-</style>
-
-<div class="caption">
-  <h1 class="h1-service" style="text-align: center; margin-bottom: -10px; margin-top: 100px;">Hizmetlerimiz</h1>
-</div>
-
-<div class="container">
+<h1 style="text-align: center; margin-top: 100px;">Hizmetlerimiz</h1>
+<div class="services-container" style="margin-top: -200px; padding: 100px;">
   {% for servis in servisler %}
-  <div class="box" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
-    <img class="image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
+  <div class="services-box" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
+    <img class="services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
     <div class="caption">
       <h1>{{ servis.adı }}</h1>
       <p>{{ servis.açıklama_kısa }}</p>
@@ -60,7 +17,6 @@
   </div>
   {% endfor %}
 </div>
-
 {% endblock %}
 
 {% block footer %}

@@ -83,7 +83,7 @@ def profile(request):
 @login_required
 def account_index(request):
     # Tüm servisleri sayfa sırasına göre al
-    servisler = Servis.objects.all().order_by('sayfadaki_sırası')
+    servisler = Servis.objects.filter(aktif_pasif=True).order_by('sayfadaki_sırası')
     return render(request, 'account/accountindex.html', {'servisler': servisler})
 
 
@@ -163,7 +163,7 @@ def delete_account(request):
 @login_required
 def submit_page(request):
     # Tüm servisleri sayfa sırasına göre al
-    servisler = Servis.objects.all().order_by('sayfadaki_sırası')
+    servisler = Servis.objects.filter(aktif_pasif=True).order_by('sayfadaki_sırası')
     return render(request, 'account/submit.html', {'servisler': servisler})
 
 @login_required

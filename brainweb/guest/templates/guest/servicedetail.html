@@ -1,52 +1,16 @@
+{% extends "base.html" %}
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'guest/css/gueststyle.css' %}">
-    <title>BrainWeb</title>
+{% block header %}
+{% include "guest/header.html" %}
+{% endblock %}
+{% block content %}
     <style>
         body {
             background-color: #f2f2f2; /* Açık gri arkaplan */
             text-align: center;
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        img {
-            margin-top: 10px;
-        }
-        .feedback {
-            margin-top: 30px;
-        }
-        .button {
-            margin-top: 50px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
-</head>
-<body>
-    <header>
-        <div class="left" >
-            <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-            <a href="{% url 'index' %}">Anasayfa</a>
-            <a href="{% url 'service_page' %}">Hizmetler</a>
-            <a href="{% url 'login_page' %}">Giriş Yap</a>
-          </div>
-    </header>
-    <div class="container"style="margin-top: 100px;">
+    <div class="service-detail-container"style="margin-top: 100px;">
         <h1>{{ servis.adı }}</h1>
         <p>{{ servis.açıklama_kısa }}</p>
         <img src="{{ servis.resim_kücük.url }}" alt="İndir" width="50">
@@ -57,16 +21,7 @@
         </div>
         <a href="#" class="button">Kullan</a>
     </div>
-</body>
-</html>
-
-<footer>
-    
-<div class="left" style="height: 10px;">
-    <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-    <a href="{% url 'index' %}">Anasayfa</a>
-    <a href="{% url 'service_page' %}">Hizmetler</a>
-    <a href="{% url 'login_page' %}">Giriş Yap</a>
-  
-  </div>
-</footer>
+    {% endblock %}
+    {% block footer %}
+{% include "guest/footer.html" %}
+{% endblock %}

@@ -5,12 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'guest/css/gueststyle.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/css/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>BrainWeb</title>
 </head>
 
 <body>
-    <header>
+    <header class="container-fluid text-white" >
         {% block header %}
         <!-- Header content -->
         {% endblock %}
@@ -22,7 +23,7 @@
         {% endblock %}
     </main>
 
-    <footer>
+    <footer class="container-fluid text-white">
         {% block footer %}
         <!-- Footer content -->
         {% endblock %}

@@ -1,9 +1,14 @@
 {% load static %}
-
-<div class="left" style="height: 10px;">
-  <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
-  <a href="{% url 'index' %}">Anasayfa</a>
-  <a href="#">Hizmetler</a>
-  <a href="{% url 'login_page' %}">Giriş Yap</a>
-
+<div class="row align-items-center">
+  <!-- Logo -->
+  <div class="col-4 col-md-2"> <!-- Logo için sütun -->
+    <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="width: 100px;">
+</div>
+  
+<!-- Bağlantılar -->
+<div class="col-8 col-md-10 d-flex justify-content-end"> <!-- Bağlantılar için sütun -->
+  <a href="{% url 'index' %}" class="text-white mx-3">Anasayfa</a>
+  <a href="{% url 'service_page' %}" class="text-white mx-3">Hizmetler</a>
+  <a href="{% url 'login_page' %}" class="text-white mx-3">Giriş Yap</a>
+</div>
 </div>
