@@ -1,4 +1,4 @@
 Django==4.2
 djangorestframework==3.14
 Pillow==10.3.0
-fastcgi==0.0.3
+wfastcgi==3.0.0
