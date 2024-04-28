@@ -1,11 +1,39 @@
 {% extends "base.html"%}
 {% load static %}
 {% block header %}
-    {% include "account/accountheader.html" %}
+<div class="row align-items-center">
+    <!-- Logo -->
+    <div class="col-4 col-md-2"> <!-- Logo için sütun -->
+      <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="width: 100px;">
+  </div>
+    
+  <!-- Bağlantılar -->
+  <div class="col-8 col-md-10 d-flex justify-content-end"> <!-- Bağlantılar için sütun -->
+    <a href="{% url 'index_account' %}">Anasayfa</a>
+    <a href="{% url 'submit_page' %}">Yükleme</a>
+    <a href="{% url 'joblist' %}">Sonuçlar</a>
+    <a href="{% url 'profile' %}">Profil</a>
+    <a href="{% url 'logout' %}">Çıkış Yap</a>
+  </div>
+</div>
 {% endblock %}
 {% block content %}
     {% include "account/accountcontent.html" %}
 {% endblock %}
 {% block footer %}
-    {% include "account/accountfooter.html" %}
+<div class="row align-items-center">
+    <!-- Logo -->
+    <div class="col-4 col-md-2"> <!-- Logo için sütun -->
+      <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="width: 100px;">
+  </div>
+    
+  <!-- Bağlantılar -->
+  <div class="col-8 col-md-10 d-flex justify-content-end"> <!-- Bağlantılar için sütun -->
+    <a href="{% url 'index_account' %}">Anasayfa</a>
+    <a href="{% url 'submit_page' %}">Yükleme</a>
+    <a href="{% url 'joblist' %}">Sonuçlar</a>
+    <a href="{% url 'profile' %}">Profil</a>
+    <a href="{% url 'logout' %}">Çıkış Yap</a>
+  </div>
+  </div>
 {% endblock %}
