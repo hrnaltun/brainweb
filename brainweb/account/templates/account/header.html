@@ -1,0 +1,16 @@
+{% load static %}
+<div class="row align-items-center">
+    <!-- Logo ve bağlantılar için sütun -->
+    <div class="col-4 col-md-2">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
+    </div>
+
+    <!-- Ana navigasyon bağlantıları -->
+    <div class="col-8 col-md-10 d-flex justify-content-end">
+        <a href="{% url 'index_account' %}" class="text-white mx-3">Anasayfa</a>
+        <a href="{% url 'submit_page' %}" class="text-white mx-3">Yükleme</a>
+        <a href="{% url 'joblist' %}" class="text-white mx-3">Sonuçlar</a>
+        <a href="{% url 'profile' %}" class="text-white mx-3">Profil</a>
+        <a href="{% url 'logout' %}" class="text-white mx-3">Çıkış Yap</a>
+    </div>
+</div>

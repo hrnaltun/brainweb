@@ -37,7 +37,7 @@ function showDeleteAccountForm() {
 }
 
 function updateSelectedLinkStyle(selectedLinkId) {
-    var links = document.querySelectorAll(".sidebar ul li a");
+    var links = document.querySelectorAll(".profile-sidebar ul li a");
     links.forEach(function(link) {
         link.classList.remove("active");
     });
