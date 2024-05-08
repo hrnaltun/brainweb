@@ -1,4 +1,4 @@
-{% extends "accountbase.html"%}
+{% extends "accountbase.html" %}
 {% load static %}
 {% block header %}
     {% include "account/header.html" %}
@@ -6,7 +6,7 @@
 {% block content %}
   <div class="joblist-container" style="margin-top: 100px;">
     <h1 class="joblist-h1">Job List</h1>
-    <p class="joblist-p" >You have 30 days to download your reports, after that period the files will be deleted forever</p>
+    <p class="joblist-p">You have 30 days to download your reports, after that period the files will be deleted forever.</p>
     <div class="search-bar">
       <label for="search">Search:</label>
       <input type="text" id="search" name="search">
@@ -15,39 +15,39 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th>Tarih</th>
+          <th>Durum</th>
+          <th>İndirme</th>
         </tr>
       </thead>
       <tbody>
+        {% for job in user_jobs %}
         <tr>
-          <td>1667854</td>
-          <td>2024-08-21 21:57</td>
-          <td><span class="status success">Success</span></td>
+          <td>{{ job.id }}</td>
+          <td>{{ job.upload_date }}</td>
           <td>
-            <button type="button" class="btn btn-sm btn-outline-danger editor_pdf" data-toggle="tooltip" title="" data-original-title="Download PDF Report File"><span class="fa fa-file-pdf"></span></button>
-            <button type="button" class="btn btn-sm btn-outline-success editor_csv" data-toggle="tooltip" title="" data-original-title="Download CSV Report File"><span class="fa fa-file-csv"></span></button>
+            {% if job.processing_status == "Tamamlandı" %}
+              <span class="status success">Tamamlandı</span>
+            {% elif job.processing_status == "İşleniyor" %}
+              <span class="status pending">İşleniyor</span>
+            {% elif job.processing_status == "Başarısız" %}
+              <span class="status failed">Başarısız</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if job.output %}
+              <a href="{{ job.output.url }}" class="btn btn-sm btn-outline-danger" title="Download PDF Report File">
+                <span class="fa fa-download"></span>
+              </a>
+            {% else %}
+              Hazır değil
+            {% endif %}
           </td>
         </tr>
-        <tr>
-          <td>667847</td>
-          <td>2024-03-22</td>
-          <td><span class="status pending">Pending</span></td>
-          <td>
-            <button type="button" class="btn btn-sm btn-outline-danger editor_pdf" data-toggle="tooltip" title="" data-original-title="Download PDF Report File"><span class="fa fa-file-pdf"></span></button>
-            <button type="button" class="btn btn-sm btn-outline-success editor_csv" data-toggle="tooltip" title="" data-original-title="Download CSV Report File"><span class="fa fa-file-csv"></span></button>
-          </td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
-    <div class="pagination">
-      <a href="#" class="previous">Previous</a>
-      <span class="current">1</span>
-      <a href="#" class="next">Next</a>
-    </div>
   </div>
-
 {% endblock %}
 {% block footer %}
     {% include "account/footer.html" %}

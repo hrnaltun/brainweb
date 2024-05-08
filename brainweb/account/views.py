@@ -9,6 +9,10 @@ from guest.models import Servis
 from .forms import EmailAuthenticationForm
 from django.utils import timezone
 from .models import UploadedFile
+from .tasks import process_uploaded_file
+import uuid
+import os
+
 
 def register_request(request):
     if request.method == 'POST':
@@ -36,6 +40,7 @@ def register_request(request):
 
 
 def login_request(request):
+    servisler = Servis.objects.filter(aktif_pasif=True).order_by("sayfadaki_sırası")
     if request.method == 'POST':
         # POST isteğinde kimlik doğrulama formunu işleme
         form = EmailAuthenticationForm(request.POST)
@@ -46,7 +51,7 @@ def login_request(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:  # Kullanıcı doğrulama başarılıysa
                 login(request, user)  # Oturum aç
-                return redirect('profile')  # Kullanıcıyı profil sayfasına yönlendir
+                return render(request, "account/submit.html", {"servisler": servisler})
             else:
                 # Kullanıcı doğrulama başarısızsa hata mesajı gönder
                 error = "Kullanıcı adı veya şifre yanlış."
@@ -181,26 +186,59 @@ def get_service_detail(request, service_id):
 
 @login_required
 def upload_file_view(request):
-    if request.method == 'POST':
-        uploaded_file = request.FILES.get('file')  # Dosyayı alın
-        
-        if uploaded_file:
-            # Dosyayı kaydet
-            new_uploaded_file = UploadedFile(
-                user=request.user,
-                file=uploaded_file,
-                upload_date=timezone.now(),
-                processing_status='Pending'
-            )
-            new_uploaded_file.save()
+    servisler = Servis.objects.filter(aktif_pasif=True).order_by("sayfadaki_sırası")
 
-            messages.success(request, f"Dosya '{uploaded_file.name}' başarıyla yüklendi.")
-            return redirect('submit_page')  # İşlem tamamlandığında yönlendir
-        else:
-            messages.error(request, "Dosya yüklenemedi. Lütfen tekrar deneyin.")
-    
-    return render(request, 'submit.html')  # Şablonun adı burada olmalı
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("file")
+
+        if not uploaded_file:
+            messages.error(request, "Dosya seçilmedi.")
+            return render(request, "account/submit.html", {"servisler": servisler})
+
+        # İlk başta UploadedFile nesnesini oluştur ve benzersiz bir ad ver
+        unique_id = uuid.uuid4().hex
+        original_filename = uploaded_file.name
+        new_file_name = f"{os.path.splitext(original_filename)[0]}_{unique_id}.nii.gz"
+
+        new_uploaded_file = UploadedFile(
+            user=request.user,
+            file=uploaded_file,
+            upload_date=timezone.now(),
+            processing_status="İşleniyor",
+        )
+        new_uploaded_file.file.name = new_file_name
+        new_uploaded_file.save()
+
+        # Dosya uzantısını kontrol et
+        file_extension = os.path.splitext(original_filename)[1]
+        if not file_extension.endswith((".nii", ".gz")):
+            new_uploaded_file.processing_status = "Başarısız"
+            new_uploaded_file.save()
+            messages.error(request, "Dosya uzantısı doğru değil. Lütfen .nii veya .nii.gz dosyası yükleyin.")
+            return render(request, "account/submit.html", {"servisler": servisler})
+
+        # Dosya yolunu kontrol et
+        file_path = new_uploaded_file.file.path
+        if not os.path.exists(file_path):
+            new_uploaded_file.processing_status = "Başarısız"
+            new_uploaded_file.save()
+            messages.error(request, "Dosya yolu geçerli değil")
+            return render(request, "account/submit.html", {"servisler": servisler})
+
+        # Eğer dosya geçerli ve mevcutsa, Celery görevini tetikle
+        process_uploaded_file.delay(new_uploaded_file.id)
+
+        messages.success(request, f"Dosya '{new_file_name}' başarıyla yüklendi.")
+        return render(request, "account/submit.html", {"servisler": servisler})
+
+    # GET istekleri için veri döndür
+    return render(request, "account/submit.html", {"servisler": servisler})
 
 @login_required
 def joblist(request):
-    return render(request, "account/joblist.html")  # İş listesi sayfasını göster
+    # Mevcut kullanıcının UploadedFile nesnelerini al
+    user_jobs = UploadedFile.objects.filter(user=request.user)  # Kullanıcıya ait işler
+    context = {
+        'user_jobs': user_jobs,  # Şablona gönderilecek veriler
+    }
+    return render(request, "account/joblist.html", context)  # Şablonu ve verileri göster

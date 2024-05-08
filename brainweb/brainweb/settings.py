@@ -134,3 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/hizmet_resimleri/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
