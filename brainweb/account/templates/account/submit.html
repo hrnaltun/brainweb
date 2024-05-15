@@ -9,7 +9,7 @@
   <div class="pipeline-buttons">
 
     {% for servis in servisler %}
-    <div class="pipeline-button" data-service-id="{{ servis.id }}">
+    <div class="pipeline-button" data-service-id="{{ servis.id }}" data-service-desc="{{ servis.açıklama }}">
       <img src="{{ servis.resim_kücük.url }}" alt="{{ servis.adı }}">
       <span>{{ servis.adı }}</span>
     </div>
@@ -27,23 +27,21 @@
   </div>
   <div id="dynamic-content" class="hidden">
     <p id="description">Açıklama metni buraya gelecek</p>
-    <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
-      <!-- URL yönlendirmesi için action kullan -->
+    <form id="service-form" method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
       {% csrf_token %}
-      <!-- CSRF koruması için -->
+      <input type="hidden" id="servis_id" name="servis_id" value="">
       <div class="file-upload-container">
         <label for="file-upload" class="file-upload-label">Dosya Seç</label>
         <input type="file" id="file-upload" name="file" class="visually-hidden">
-        <span id="file-name" class="file-name">Dosya seçilmedi</span> <!-- Dosya adını göstermek için -->
+        <span id="file-name" class="file-name">Dosya seçilmedi</span>
       </div>
-      <button class="submit-button" type="submit">Gönder</button> <!-- Formu gönder -->
+      <button class="submit-button" type="submit">Gönder</button>
     </form>
-
   </div>
 </div>
 {% endblock %}
 
 {% block footer %}
 {% include "account/footer.html" %}
-<script src="{% static 'account/js/submit.js'%}"></script>
+<script src="{% static 'account/js/submit.js' %}"></script>
 {% endblock %}

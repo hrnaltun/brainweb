@@ -190,6 +190,7 @@ def upload_file_view(request):
 
     if request.method == "POST":
         uploaded_file = request.FILES.get("file")
+        servis_id = request.POST.get("servis_id")
 
         if not uploaded_file:
             messages.error(request, "Dosya seçilmedi.")
@@ -226,9 +227,9 @@ def upload_file_view(request):
             return render(request, "account/submit.html", {"servisler": servisler})
 
         # Eğer dosya geçerli ve mevcutsa, Celery görevini tetikle
-        process_uploaded_file.delay(new_uploaded_file.id)
+        process_uploaded_file.delay(new_uploaded_file.id, servis_id)
 
-        messages.success(request, f"Dosya '{new_file_name}' başarıyla yüklendi.")
+        messages.success(request, f"Dosya '{new_file_name}' başarıyla yüklendi. Sonuçlar sayfasından görebilirsiniz.")
         return render(request, "account/submit.html", {"servisler": servisler})
 
     # GET istekleri için veri döndür

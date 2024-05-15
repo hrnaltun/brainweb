@@ -12,4 +12,4 @@ class UploadedFile(models.Model):
     objects = models.Manager()
     
     def __str__(self):
-        return f"{self.user} - {self.file.name}"  # Modeli temsil eden metin
+        return f"{self.id}"  # Modeli temsil eden metin

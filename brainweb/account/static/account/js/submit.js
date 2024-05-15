@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const descriptionText = document.getElementById("description");
     const fileUpload = document.getElementById("file-upload");
     const fileName = document.getElementById("file-name");
+    const serviceForm = document.getElementById("service-form");
+
+    // Servis ID'sini form input alanına ekleyen JavaScript fonksiyonu
+    function setServiceId(servisId) {
+        document.getElementById("servis_id").value = servisId;
+    }
 
     document.querySelectorAll('.pipeline-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -18,8 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     return response.json();
                 })
                 .then(data => {
-                    dynamicContent.classList.remove('hidden');  // Paneli görünür yapın
-                    descriptionText.textContent = data.açıklama || 'Açıklama mevcut değil.';  // Açıklamayı güncelleyin
+                    // Servis ID'sini form input alanına ekleyelim
+                    setServiceId(servisId);
+                    
+                    // Açıklama metnini güncelleyelim
+                    descriptionText.textContent = data.açıklama || 'Açıklama mevcut değil.';  
+
+                    // Dynamic content panelini gösterelim
+                    dynamicContent.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error fetching service data:', error);
+                    descriptionText.textContent = 'Servis bilgisi alınamadı.';
                 });
         });
     });
