@@ -153,6 +153,5 @@ if __name__ == "__main__":
     image_path = sys.argv[1]
     model_path = sys.argv[2]
     output_path = sys.argv[3]
-    servis_id = sys.argv[4]
 
-    main(image_path, model_path, output_path, servis_id)
+    main(image_path, model_path, output_path)
