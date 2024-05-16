@@ -19,7 +19,7 @@
             <p>{{ servis.açıklama_uzun }}</p>
             <img src="{{ servis.resim_büyük.url }}" alt="İndir" width="50">
         </div>
-        <a href="#" class="button">Kullan</a>
+        <a href="{% url 'submit_page' %}" class="button">Kullan</a>
     </div>
     {% endblock %}
 {% block footer %}
