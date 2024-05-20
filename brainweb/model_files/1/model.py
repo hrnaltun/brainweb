@@ -32,36 +32,28 @@ def get_image(image_path):
 
 
 def slice_3d_image_axial(img_data, name, dimensions):
-    # Önce gerekli kütüphaneleri ve değişkenleri tanımlayın (dimensions ve img_data)
-
-    axial_slice = []
     folder_name = "test_png"  # Klasör adı
     os.makedirs(folder_name, exist_ok=True)  # Klasörü oluşturun (varsa geçersiz kıl)
     index = 0
     for slice_index in range(dimensions[2]):
-        axial_slice = img_data[:, :, slice_index]
+        axial_slice = np.transpose(img_data[:, :, slice_index])  # Boyutları döndür
         slice_index_str = str(index).zfill(3)
         # Görüntüyü uygun modda oluşturun (varsayılan olarak 'L' kullanıyoruz)
         axial_slice_image = Image.fromarray(axial_slice.astype("uint8"))
         # Görüntüyü PNG formatında kaydedin
-
-        save_path = os.path.join(
-            folder_name, f"{name}{slice_index_str}.png"
-        )  # Kaydedilecek dosya yolunu belirleyin
+        save_path = os.path.join(folder_name, f"{name}{slice_index_str}.png")
         axial_slice_image.save(save_path)  # Görüntüyü kaydedin
         index += 1
 
+    dimensions = ( dimensions[0], dimensions[1],dimensions[2])
 
-def output(model_path,output_path):
+
+def output(model_path, output_path):
     tempdir_img = "./test_png"
     tempdir_label = "./test_png"
 
     testimages = sorted(glob(os.path.join(tempdir_img, "*.png")))
     testsegs = sorted(glob(os.path.join(tempdir_label, "*.png")))
-    # print(len(testimages))
-    # print("Test Images:")
-    # for image_path in testimages:
-    #     print(image_path)
 
     # Görüntü ve segmentasyon için dönüşümleri tanımla
     imtrans = Compose(
@@ -116,22 +108,20 @@ def output(model_path,output_path):
             )
             val_outputs = [post_trans(i) for i in decollate_batch(val_outputs)]
 
-            # goster([val_labels[0][0].cpu().detach().numpy(),val_outputs[0][0].cpu().detach().numpy()])
-            axial_tensor = torch.FloatTensor(
-                val_outputs[0][0].cpu().detach().numpy()
-            ).unsqueeze(
-                0
-            )  # (1, H, W)
+            # Boyutları değiştirmeyin, orijinal boyutları koruyun
+            axial_tensor = val_outputs[0][0]  # (1, H, W)
             axial_slices.append(axial_tensor)
 
-        ########## Sliceları birleştirerek 3 boyutlu bir tensör oluştur ###########
+        # Sliceları birleştirerek 3 boyutlu bir tensör oluştur
         stacked_tensor = torch.stack(axial_slices, dim=0).squeeze(1)  # (S, H, W)
-        # print(stacked_tensor.size())
-        ########## kayıt ###########
-        numpy_array = stacked_tensor.numpy()
-        output_tensor = nib.Nifti1Image(numpy_array, affine=np.eye(4))
+
+        # Boyutları döndürerek output_tensor oluştur
+        output_tensor = stacked_tensor.permute(2,1,0)  # Boyutları döndür
+        # Kayıt
+        numpy_array = output_tensor.numpy()
+        output_tensor_nii = nib.Nifti1Image(numpy_array, affine=np.eye(4))
         # Dosyayı .nii.gz olarak kaydet
-        nib.save(output_tensor, output_path)
+        nib.save(output_tensor_nii, output_path)
         return output_path
 
 def main(image_path, model_path, output_path):
