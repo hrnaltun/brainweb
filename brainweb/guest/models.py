@@ -16,9 +16,10 @@ class Servis(models.Model):
     aktif_pasif = models.BooleanField(default=True)
     model_py_dosyası = models.FileField(upload_to=get_upload_path, default='', blank=True, null=True)  # Model Python dosyasını saklamak için
     model_pth_dosyası = models.FileField(upload_to=get_upload_path, default='', blank=True, null=True)  # Model .pth dosyasını saklamak için
+    objects = models.Manager()
 
     def __str__(self):
-        return self.adı
+        return f"{self.adı}"
 
     def save(self, *args, **kwargs):
         is_it_new = not bool(self.pk)

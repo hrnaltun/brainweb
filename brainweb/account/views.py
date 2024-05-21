@@ -197,9 +197,9 @@ def upload_file_view(request):
             return render(request, "account/submit.html", {"servisler": servisler})
 
         # İlk başta UploadedFile nesnesini oluştur ve benzersiz bir ad ver
-        unique_id = uuid.uuid4().hex
+        unique_id = uuid.uuid4()
         original_filename = uploaded_file.name
-        new_file_name = f"{os.path.splitext(original_filename)[0]}_{unique_id}.nii.gz"
+        new_file_name = f"{os.path.splitext(original_filename)[0]}_{str(unique_id)[:2]}.nii.gz"
 
         new_uploaded_file = UploadedFile(
             user=request.user,

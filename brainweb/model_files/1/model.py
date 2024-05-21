@@ -118,7 +118,7 @@ def output(model_path, output_path):
         # Boyutları döndürerek output_tensor oluştur
         output_tensor = stacked_tensor.permute(2,1,0)  # Boyutları döndür
         # Kayıt
-        numpy_array = output_tensor.numpy()
+        numpy_array = output_tensor.cpu().numpy()
         output_tensor_nii = nib.Nifti1Image(numpy_array, affine=np.eye(4))
         # Dosyayı .nii.gz olarak kaydet
         nib.save(output_tensor_nii, output_path)
