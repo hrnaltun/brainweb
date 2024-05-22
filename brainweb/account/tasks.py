@@ -22,7 +22,7 @@ def process_uploaded_file(uploaded_file_id, servis_id):
         return f"Model directory: {model_dir} bulunamadı"
 
     filename_without_extension = os.path.splitext(uploaded_file_obj.file.name)[0]
-    output_filename = f"{filename_without_extension}_output"
+    output_filename = f"{filename_without_extension}_output.nii.gz"
     output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', output_filename)
 
     # Dynamically import the module and call the main function

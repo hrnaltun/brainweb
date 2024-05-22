@@ -7,7 +7,6 @@ from PIL import Image
 import nibabel as nib
 from monai.data import ArrayDataset, decollate_batch, DataLoader
 from monai.inferers import sliding_window_inference
-from monai.metrics import DiceMetric
 from monai.transforms import Activations, AsDiscrete, Compose, LoadImage, ScaleIntensity
 
 
@@ -68,12 +67,6 @@ def output(model_path, output_path):
     val_loader = DataLoader(
         val_ds, batch_size=1, num_workers=1, pin_memory=torch.cuda.is_available()
     )
-
-    # Dice metriğini başlat
-    dice_metric = DiceMetric(
-        include_background=True, reduction="mean", get_not_nans=False
-    )
-
     # Son işlemler için dönüşümleri tanımla
     post_trans = Compose([Activations(sigmoid=True), AsDiscrete(threshold=0.5)])
 
@@ -136,7 +129,7 @@ def main(image_path, model_path, output_path):
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 4:
         print("Usage: python model.py <image_path> <model_path> <output_path>")
         sys.exit(1)
 
