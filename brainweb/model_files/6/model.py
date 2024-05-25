@@ -19,7 +19,7 @@ def apply_bet(img, bet, out_fname):
     sitk.WriteImage(out, out_fname)
 
 
-def run_hd_bet(mri_fnames, output_fnames, model_path, config_file="config.py", device=0,
+def run_hd_bet(mri_fnames, output_fnames, model_path, device=0,
                postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False, zip_output=True, output_dir="outputs//uploads"):
 
     torch.backends.cudnn.benchmark = True
@@ -703,7 +703,7 @@ def main(image_path, model_path, output_path):
         config = HD_BET_Config  # HD_BET_Config değişkeninin doğru şekilde tanımlandığını varsayıyorum
 
         # İşlemi başlat
-        result=run_hd_bet(image_path, output_path,model_path=model_path, config_file="config.py",  device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
+        result=run_hd_bet(image_path, output_path,model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
 
         return result
     except Exception as e:

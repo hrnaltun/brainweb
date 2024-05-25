@@ -199,7 +199,18 @@ def upload_file_view(request):
         # İlk başta UploadedFile nesnesini oluştur ve benzersiz bir ad ver
         unique_id = uuid.uuid4()
         original_filename = uploaded_file.name
-        new_file_name = f"{str(unique_id)[:4]}.nii.gz"
+        file_extension = os.path.splitext(original_filename)[1]
+        
+        # Dosya uzantısını kontrol et
+        if file_extension not in [".nii", ".gz", ".mha"]:
+            messages.error(request, "Dosya uzantısı doğru değil. Lütfen .nii, .nii.gz veya .mha dosyası yükleyin.")
+            return render(request, "account/submit.html", {"servisler": servisler})
+
+        # Yeni dosya adını uzantıya göre belirle
+        if file_extension == ".mha":
+            new_file_name = f"{str(unique_id)[:4]}.mha"  # .mha dosyaları orijinal adını korur
+        else:
+            new_file_name = f"{str(unique_id)[:4]}.nii.gz"  # Diğerleri benzersiz ad alır
 
         new_uploaded_file = UploadedFile(
             user=request.user,
@@ -209,14 +220,6 @@ def upload_file_view(request):
         )
         new_uploaded_file.file.name = new_file_name
         new_uploaded_file.save()
-
-        # Dosya uzantısını kontrol et
-        file_extension = os.path.splitext(original_filename)[1]
-        if not file_extension.endswith((".nii", ".gz")):
-            new_uploaded_file.processing_status = "Başarısız"
-            new_uploaded_file.save()
-            messages.error(request, "Dosya uzantısı doğru değil. Lütfen .nii veya .nii.gz dosyası yükleyin.")
-            return render(request, "account/submit.html", {"servisler": servisler})
 
         # Dosya yolunu kontrol et
         file_path = new_uploaded_file.file.path
