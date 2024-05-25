@@ -3,20 +3,20 @@ import warnings
 import os
 import numpy as np
 import nibabel as nib
-from monai.data import CacheDataset, DataLoader, decollate_batch
-from monai.networks.layers import Norm
+from monai.data import CacheDataset, DataLoader
 from monai.inferers import sliding_window_inference
+from monai.networks.layers import Norm
 from monai.networks.nets import UNet
 from monai.transforms import (
     AsDiscrete,
     Compose,
-    CropForegroundd,
     EnsureChannelFirstd,
     LoadImaged,
     Orientationd,
     ScaleIntensityRanged,
-    Spacingd,
+    Spacingd
 )
+from monai.data.utils import decollate_batch
 
 def main(image_path, model_path, output_path):
     # Gerekli kütüphanelerin kurulması
@@ -35,12 +35,11 @@ def main(image_path, model_path, output_path):
     torch.backends.cudnn.benchmark = True
 
     # Path and settings
-    val_image = image_path
-
+    pixdim = (0.513392984867096, 0.513392984867096, 0.8000029921531677)
+    
     # Updated function to prepare data without labels
-    def prepare_data(image_path):
+    def prepare_data():
         val_files = [{"image": image_path}]
-        pixdim = (0.513392984867096, 0.513392984867096, 0.8000029921531677)
         val_transforms = Compose(
             [
                 LoadImaged(keys=["image"]),
@@ -53,16 +52,14 @@ def main(image_path, model_path, output_path):
                     b_max=1.0,
                     clip=True,
                 ),
-                CropForegroundd(keys=["image"], source_key="image"),
-                Orientationd(keys=["image"], axcodes="RAS"),
                 Spacingd(
                     keys=["image"],
                     pixdim=pixdim,
                     mode=("bilinear"),
                 ),
+                Orientationd(keys=["image"], axcodes="RAS"),
             ]
         )
-
         val_ds = CacheDataset(
             data=val_files,
             transform=val_transforms,
@@ -70,7 +67,7 @@ def main(image_path, model_path, output_path):
         )
         return val_ds
 
-    val_ds = prepare_data(val_image)
+    val_ds = prepare_data()
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, pin_memory=True)
 
     model = UNet(
@@ -89,21 +86,21 @@ def main(image_path, model_path, output_path):
     model.to(device)
 
     with torch.no_grad():
-        val_data = next(iter(val_loader))
-        val_inputs = val_data["image"].to(device)
-        
-        roi_size = (96, 96, 96)
-        sw_batch_size = 4
-        val_outputs = sliding_window_inference(val_inputs, roi_size, sw_batch_size, model)
-        val_outputs = [AsDiscrete(argmax=True, to_onehot=2)(i) for i in decollate_batch(val_outputs)]
+        for val_data in val_loader:
+            val_inputs = val_data["image"].to(device)
+            roi_size = (96, 96, 96)
+            sw_batch_size = 4
+            val_outputs = sliding_window_inference(val_inputs, roi_size, sw_batch_size, model)
+            val_outputs = [AsDiscrete(argmax=True, to_onehot=2)(i) for i in decollate_batch(val_outputs)]
 
-        # Assuming post_pred outputs are tensors, convert them to numpy arrays
-        val_outputs_np = val_outputs[0].cpu().numpy()
+            # Assuming post_pred outputs are tensors, convert them to numpy arrays
+            val_output_np = val_outputs[0].cpu().numpy()  # Only one output since there's only one input
 
-        # Save the output to a NIfTI file
-        output_img = nib.Nifti1Image(val_outputs_np[1], np.eye(4))  # use [1] to extract the vessel class
-        nib.save(output_img, output_path)
-        return output_path
+            # Save the output to a NIfTI file
+            output_img = nib.Nifti1Image(val_output_np[1], np.eye(4))  # use [1] to extract the vessel class
+            output_img.header['pixdim'] = [1, 0.513392984867096, 0.513392984867096, 0.8000029921531677, 0, 0, 0, 0]
+            nib.save(output_img, output_path)
+            return output_path
 
 if __name__ == "__main__":
     import sys
