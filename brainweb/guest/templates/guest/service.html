@@ -5,15 +5,17 @@
 {% endblock %}
 {% block content %}
 
-<h1 style="text-align: center; margin-top: 100px;">Hizmetlerimiz</h1>
-<div class="services-container" style="margin-top: -200px; padding: 100px;">
+<h1 class="text-center mb-5 mt-5">Hizmetlerimiz</h1>
+<div class="services-container row">
   {% for servis in servisler %}
-  <div class="services-box" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
-    <img class="services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
-    <div class="caption">
-      <h1>{{ servis.adı }}</h1>
-      <p>{{ servis.açıklama_kısa }}</p>
-    </div>
+  <div class="col-md-3 mb-4 services-box">
+      <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
+          <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf" >
+          <div class="card-body">
+              <h5 class="card-title">{{ servis.adı }}</h5>
+              <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
+          </div>
+      </div>
   </div>
   {% endfor %}
 </div>

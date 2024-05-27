@@ -11,87 +11,85 @@
     background-position: center;
   }
 </style>
-
 <div class="hero-container">
-  <div class="logo">
-    <img src="{% static 'guest\img\logo.png' %}" style="margin-left: 60px;" alt="Logo">
-    <h2>MRI beyin analizi için açık erişim platformu</h2>
-  </div>
-</div>
-
-
-<div class="mission-container">
-  <div class="caption">
-    <h1 style="margin-top: -50px;">MİSYONUMUZ</h1>
-
-    <p>Brainweb platformu çevrimiçi açık bir MRI beyin hacim ölçümü sistemidir.Misyonumuz, dünyanın her yerindeki
-      araştırmacıların,<br> karmaşık yazılım paketlerini öğrenmeye veya yerel sitelerinde pahalı hesaplama altyapılarına
-      sahip olmaya gerek kalmadan, MRI </br>verilerinden otomatik olarak hacimsel beyin bilgisi elde etmelerine yardımcı
-      olmaktır.</p>
-    <p> </p>
-    <p>Brainweb platformu tam otomatik olarak çalışmakta olup herhangi bir insan müdahalesine gerek kalmadan birkaç
-      dakika içerisinde<br> beyin analizi yapabilmektedir. Şu anda farklı beyin alanlarını ve hastalıklarını analiz eden
-      boru hatları kurduk.</p>
-    <p>Bu çevrimiçi platform, ticari olmayan ve tıbbi olmayan amaçlar için ücretsizdir (yalnızca araştırma).</p>
-    <p> İşbirliği arıyoruz, lütfen bizimle herhangi bir geri bildirimde bulunarak iletişime geçin team@brainweb.net</p>
-  </div>
-</div>
-<h1 style="text-align: center; margin-bottom: -350px;">Hizmetlerimiz</h1>
-<div class="services-container">
-  {% for servis in servisler %}
-  <div class="services-box" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
-    <img class="services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
-    <div class="caption">
-      <h1>{{ servis.adı }}</h1>
-      <p>{{ servis.açıklama_kısa }}</p>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="logo">
+          <img src="{% static 'guest\img\logo.png' %}" class="mx-auto d-block" style="max-width: 200px;" alt="Logo">
+          <h2 class="mt-3">MRI beyin analizi için açık erişim platformu</h2>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="mission-container text-center">
+  <div class="caption">
+      <h1>MİSYONUMUZ</h1>
+      <p>Brainweb platformu çevrimiçi açık bir MRI beyin hacim ölçümü sistemidir. Misyonumuz, dünyanın her yerindeki araştırmacıların, karmaşık yazılım paketlerini öğrenmeye veya yerel sitelerinde pahalı hesaplama altyapılarına sahip olmaya gerek kalmadan, MRI verilerinden otomatik olarak hacimsel beyin bilgisi elde etmelerine yardımcı olmaktır.</p>
+      <p>Brainweb platformu tam otomatik olarak çalışmakta olup herhangi bir insan müdahalesine gerek kalmadan birkaç dakika içerisinde beyin analizi yapabilmektedir. Şu anda farklı beyin alanlarını ve hastalıklarını analiz eden boru hatları kurduk.</p>
+      <p>Bu çevrimiçi platform, ticari olmayan ve tıbbi olmayan amaçlar için ücretsizdir (yalnızca araştırma).</p>
+      <p>İşbirliği arıyoruz, lütfen bizimle herhangi bir geri bildirimde bulunarak iletişime geçin: team@brainweb.net</p>
+  </div>
+</div>
+
+<h1 class="text-center mb-5 mt-3">Hizmetlerimiz</h1>
+<div class="services-container row">
+  {% for servis in servisler %}
+  <div class="col-md-3 mb-4 services-box">
+      <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
+          <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf" >
+          <div class="card-body">
+              <h5 class="card-title">{{ servis.adı }}</h5>
+              <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
+          </div>
+      </div>
   </div>
   {% endfor %}
 </div>
 
-<h1 style="text-align: center; margin-top: -100px;">Nasıl Çalışır?</h1>
-
-<div class="how-it-works-section">
-  <div class="steps">
-    <img src="{% static 'guest\img\login.png' %}" alt="">
+<h1 class="text-center my-5">Nasıl Çalışır?</h1>
+<div class="how-it-works-section row text-center">
+  <div class="mx-auto steps" style="margin-left: 10px !important;">
+    <img src="{% static 'guest/img/login.png' %}" class="img-fluid mb-3" alt="Giriş">
     <h2>Giriş</h2>
-    <p>Öncelikle yeni kullanıcı olarak kayıt olmanız veya kayıtlı iseniz sisteme giriş yapmanız gerekmektedir. </p>
+    <p>Öncelikle yeni kullanıcı olarak kayıt olmanız veya kayıtlı iseniz sisteme giriş yapmanız gerekmektedir.</p>
   </div>
-  <div class="steps">
-    <img src="{% static 'guest\img\upload.png' %}" alt="">
-    <h2>Yükleme </h2>
+  <div class="mx-auto steps" style="margin-left: 10px !important;">
+    <img src="{% static 'guest/img/upload.png' %}" class="img-fluid mb-3" alt="Yükleme">
+    <h2>Yükleme</h2>
     <p>İkinci olarak, sıkıştırılmış anonimleştirilmiş beyin MRI verilerinizi NIFTI formatında yükleyin.</p>
   </div>
-  <div class="steps">
-    <img src="{% static 'guest\img\process.png' %}" alt="">
-    <h2>İşleme </h2>
-    <p>Verileriniz yüklendikten sonra volBrain isteğinizi mümkün olan en kısa sürede işleme alacak ve sonuçları içeren
-      bir rapor oluşturacaktır. </p>
+  <div class="mx-auto steps" style="margin-left: 10px !important;">
+    <img src="{% static 'guest/img/process.png' %}" class="img-fluid mb-3" alt="İşleme">
+    <h2>İşleme</h2>
+    <p>Verileriniz yüklendikten sonra volBrain isteğinizi mümkün olan en kısa sürede işleme alacak ve sonuçları içeren bir rapor oluşturacaktır.</p>
   </div>
-  <div class="steps">
-    <img src="{% static 'guest\img\result.png' %}" alt="">
+  <div class="mx-auto steps" style="margin-left: 10px !important; ">
+    <img src="{% static 'guest/img/result.png' %}" class="img-fluid mb-3" alt="Sonuç">
     <h2>Sonuç</h2>
-    <p>Son olarak, işinizi tamamladıktan sonra sonuçlarınızı içeren PDF raporunu içeren bir e-posta alacaksınız. </p>
+    <p>Son olarak, işinizi tamamladıktan sonra sonuçlarınızı içeren PDF raporunu içeren bir e-posta alacaksınız.</p>
   </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var backgrounds = ['{% static "guest\\img\\indir1.jpg" %}']; // Arka plan resimlerinin dosya adları
-    var randomIndex = Math.floor(Math.random() * backgrounds.length); // Rastgele bir indeks seç
-    var selectedBackground = backgrounds[randomIndex]; // Seçilen arka plan resmi
+document.addEventListener("DOMContentLoaded", function () {
+  var backgrounds = ['{% static "guest\\img\\indir1.jpg" %}']; // Arka plan resimlerinin dosya adları
+  var randomIndex = Math.floor(Math.random() * backgrounds.length); // Rastgele bir indeks seç
+  var selectedBackground = backgrounds[randomIndex]; // Seçilen arka plan resmi
 
-    document.body.style.backgroundImage = "url('" + selectedBackground + "')"; // Seçilen arka plan resmini ayarla
-  });
+  document.body.style.backgroundImage = "url('" + selectedBackground + "')"; // body elementinin arka plan resmini ayarla
+});
+
 </script>
-
 <script>
   // JavaScript ile her bir kutunun tıklanabilir olmasını sağlayalım
   const boxes = document.querySelectorAll('.box');
   boxes.forEach(box => {
-    box.addEventListener('click', () => {
-      const link = box.querySelector('a').getAttribute('href');
-      window.location.href = link;
+      box.addEventListener('click', () => {
+          const link = box.querySelector('a').getAttribute('href');
+          window.location.href = link;
 
-    });
+      });
   });
 </script>
