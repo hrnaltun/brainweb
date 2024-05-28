@@ -22,6 +22,7 @@ header {
 }
 
 footer {
+  position: fixed;
   bottom: 0;
   background-color: #5e5e5e;
   padding-bottom: 3px;
@@ -29,6 +30,7 @@ footer {
   align-items: center;
   z-index: 0;
 }
+
 .hero-container {
   display: flex;
   flex-wrap: wrap;
@@ -40,21 +42,25 @@ footer {
 
 .how-it-works-section {
   display: flex;
-  justify-content: space-between; /* Adımları eşit aralıklarla dağıtır */
-  align-items: center; /* Dikeyde hizalamayı sağlar */
+  justify-content: space-between;
+  /* Adımları eşit aralıklarla dağıtır */
+  align-items: center;
+  /* Dikeyde hizalamayı sağlar */
   padding-bottom: 100px;
 }
 
 .steps {
   max-width: 275px;
   height: 352px;
-  flex: 1; /* Adımların esnek olmasını sağlar */
+  flex: 1;
+  /* Adımların esnek olmasını sağlar */
   padding: 20px;
   margin: 10px;
   background-color: #ffffff;
   text-align: center;
   transition: transform 0.3s ease;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3); /* Her zaman görünen hafif gölge */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  /* Her zaman görünen hafif gölge */
 }
 
 .steps:hover {
@@ -77,6 +83,7 @@ footer {
   font-size: 16px;
   color: #666;
 }
+
 .services-container {
   display: flex;
   flex-wrap: wrap;
@@ -101,12 +108,14 @@ footer {
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Her zaman görünen hafif gölge */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Her zaman görünen hafif gölge */
 }
 
 .services-box:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Hover durumunda biraz daha büyük gölge */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  /* Hover durumunda biraz daha büyük gölge */
 }
 
 .mission-container {
@@ -116,6 +125,7 @@ footer {
   align-items: center;
   padding: 50px;
   margin-top: 200px;
+  /* Üst marjını düşürdük */
   background-color: #f2f2f2;
   border-radius: 10px;
 }
@@ -130,15 +140,145 @@ footer {
   margin-bottom: 10px;
 }
 
+@media (max-width: 768px) {
+  .hero-container {
+    padding-top: 50%;
+    padding-right: 2%;
+    padding-left: 2%;
+    margin-top: 3%;
+    /* Üstten %3 boşluk */
+  }
+
+  .how-it-works-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .steps {
+    margin-bottom: 2%;
+    /* Alt kısmından %2 boşluk */
+    max-width: 100%;
+    /* Tam genişlikte olması sağlanıyor */
+  }
+
+  .services-container {
+    flex-direction: column;
+  }
+
+  .services-box {
+    flex-basis: 100%;
+    margin: 5% 0;
+    /* Üstten ve alttan %3 boşluk */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .services-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* Hover durumunda biraz daha büyük gölge */
+  }
+
+  .services-image {
+    margin-top: 3%;
+    /* Üstten %3 boşluk */
+    max-width: 50%;
+    /* Maksimum genişlik %50 */
+  }
+
+  .mission-container {
+    padding: 2%;
+    /* Her taraftan %2 iç boşluk */
+    text-align: center;
+    position: relative;
+    top: 6%;
+    /* Yükseklik yarısında başlaması için */
+    transform: translateY(-50%);
+  }
+
+  /* Hizmetler detay sayfası */
+  .service-detail-container {
+    max-width: 90%;
+    /* Sayfa genişliğinin %90'ı kadar olacak */
+    margin: 0 auto;
+    padding: 5%;
+    /* Sayfa genişliğinin %5'i kadar iç boşluk */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .service-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* Mobilde daha iyi görünüm için */
+  }
+
+  .service-info img {
+    margin-right: 5%;
+    /* Sağ boşluk olarak %5 kullan */
+    margin-bottom: 2%;
+    /* Aşağı boşluk olarak %2 kullan */
+    max-width: 40%;
+    /* Resmin maksimum genişliği %40 */
+  }
+
+  .service-detail-container .feedback {
+    margin-top: 5%;
+    /* Yukarı boşluk olarak %5 kullan */
+  }
+
+  footer {
+    position: relative;
+    background-color: #5e5e5e;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    margin-top: 5%; /* Yukarı boşluğu yüzde bazında ayarlandı */
+  }
+
+  .service-detail-container .button {
+    margin-top: 5%; /* Butonun üst boşluğu yüzde bazında ayarlandı */
+    background-color: #4CAF50;
+    color: white;
+    padding: 1% 2%; /* Padding yüzde bazında ayarlandı */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.5vw; /* Font büyüklüğü vw (viewport width) birimine göre ayarlandı */
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+}
+
 /* Hizmetler detay sayfası  */
 .service-detail-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.service-detail-container img {
-  margin-top: 10px;
+.service-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* Mobilde daha iyi görünüm için */
+}
+
+.service-info img {
+  margin-right: 15px;
+  margin-bottom: 10px;
+  /* Mobilde daha iyi görünüm için */
 }
 
 .service-detail-container .feedback {

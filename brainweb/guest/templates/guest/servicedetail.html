@@ -5,21 +5,30 @@
 {% endblock %}
 {% block content %}
     <style>
-        body {
-            background-color: #f2f2f2; /* Açık gri arkaplan */
-            text-align: center;
+        body,html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
         }
     </style>
-    <div class="service-detail-container"style="margin-top: 100px;">
-        <h1>{{ servis.adı }}</h1>
-        <p>{{ servis.açıklama_kısa }}</p>
-        <img src="{{ servis.resim_kücük.url }}" alt="İndir" width="50">
-        <div class="feedback">
-            <h2>Geri Bildirim</h2>
-            <p>{{ servis.açıklama_uzun }}</p>
-            <img src="{{ servis.resim_büyük.url }}" alt="İndir" width="50">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 col-sm-12 mt-3">
+                <div class="service-detail-container">
+                    <h1>{{ servis.adı }}</h1>
+                    <div class="service-info">
+                        <img src="{{ servis.resim_kücük.url }}" alt="İndir" width="100">
+                        <p>{{ servis.açıklama_kısa }}</p>
+                    </div>
+                    <div class="feedback">
+                        <h2>Geri Bildirim</h2>
+                        <p>{{ servis.açıklama_uzun }}</p>
+                        <img src="{{ servis.resim_büyük.url }}" alt="İndir" width="200">
+                    </div>
+                    <a href="{% url 'login_page' %}" class="button">Kullan</a>
+                </div>
+            </div>
         </div>
-        <a href="{% url 'login_page' %}" class="button">Kullan</a>
     </div>
     {% endblock %}
     {% block footer %}
