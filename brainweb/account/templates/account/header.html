@@ -5,12 +5,40 @@
         <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
     </div>
 
+    <!-- Hamburger Menü (Sadece Mobil) -->
+    <div class="col-8 d-sm-none text-right">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+    </div>
+
     <!-- Ana navigasyon bağlantıları -->
-    <div class="col-8 col-md-10 d-flex justify-content-end">
+    <div class="col-md-10 d-none d-sm-flex justify-content-end align-items-center">
         <a href="{% url 'index_account' %}" class="text-white mx-3">Anasayfa</a>
         <a href="{% url 'submit_page' %}" class="text-white mx-3">Yükleme</a>
         <a href="{% url 'joblist' %}" class="text-white mx-3">Sonuçlar</a>
         <a href="{% url 'profile' %}" class="text-white mx-3">Profil</a>
         <a href="{% url 'logout' %}" class="text-white mx-3">Çıkış Yap</a>
+    </div>
+
+    <!-- Hamburger Menü (Mobil) -->
+    <div class="col-12 collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{% url 'index_account' %}" class="nav-link text-white">Anasayfa</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'submit_page' %}" class="nav-link text-white">Yükleme</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'joblist' %}" class="nav-link text-white">Sonuçlar</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'profile' %}" class="nav-link text-white">Profil</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link text-white">Çıkış Yap</a>
+            </li>
+        </ul>
     </div>
 </div>
