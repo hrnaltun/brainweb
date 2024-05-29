@@ -632,9 +632,13 @@ input[type="file"].visually-hidden {
     padding-bottom: 3px;
     display: flex;
     align-items: center;
+    font-size: 12px;
     z-index: 1;
     margin-top: 5%;
     /* Yukarı boşluğu yüzde bazında ayarlandı */
+  }
+  .footer-mobile{
+    margin-left: -20px;
   }
 
   .service-detail-container .button {

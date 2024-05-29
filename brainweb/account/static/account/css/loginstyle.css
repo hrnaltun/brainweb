@@ -7,14 +7,10 @@ body {
 header {
     position: fixed;
     top: 0;
-    width: 100%;
-    background-color: var(--background);
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-}
+    background-color: #29475f;
+    padding: 20px;
+    z-index: 1;
+  }
 
 .account-container {
     display: flex;
