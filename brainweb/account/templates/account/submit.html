@@ -1,44 +1,70 @@
 {% extends "accountbase.html"%}
 {% load static %}
+
 {% block header %}
 {% include "account/header.html" %}
 {% endblock %}
+
 {% block content %}
-<div class="pipeline-container" style="margin-top: 100px;">
-  <h1>Boru Hattı Seçimi</h1>
-  <div class="pipeline-buttons">
-
-    {% for servis in servisler %}
-    <div class="pipeline-button" data-service-id="{{ servis.id }}" data-service-desc="{{ servis.açıklama }}">
-      <img src="{{ servis.resim_kücük.url }}" alt="{{ servis.adı }}">
-      <span>{{ servis.adı }}</span>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="upload-content">
-  <div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-      {{ message }}
-    </div>
-    {% endfor %}
-  </div>
-  <div id="dynamic-content" class="hidden">
-    <p id="description">Açıklama metni buraya gelecek</p>
-    <form id="service-form" method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="hidden" id="servis_id" name="servis_id" value="">
-      <div class="file-upload-container">
-        <label for="file-upload" class="file-upload-label">Dosya Seç</label>
-        <input type="file" id="file-upload" name="file" class="visually-hidden">
-        <span id="file-name" class="file-name">Dosya seçilmedi</span>
+<style>
+    body,
+    html {
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+</style>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="pipeline-container mt-5">
+        <h1 class="text-center">Boru Hattı Seçimi</h1>
+        <div class="row justify-content-center">
+          {% for servis in servisler %}
+          <div class="col-md-2">
+            <div class="pipeline-button m-2" data-service-id="{{ servis.id }}" data-service-desc="{{ servis.açıklama }}">
+              <img src="{{ servis.resim_kücük.url }}" alt="{{ servis.adı }}">
+              <span>{{ servis.adı }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
       </div>
-      <button class="submit-button" type="submit">Gönder</button>
-    </form>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="upload-content mt-5">
+        <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+        <div id="dynamic-content" class="hidden">
+          <p id="description">Açıklama metni buraya gelecek</p>
+          <form id="service-form" method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="servis_id" name="servis_id" value="">
+            <div class="form-group file-upload-container">
+              <label for="file-upload" class="file-upload-label">Dosya Seç</label>
+              <input type="file" id="file-upload" name="file" class="visually-hidden">
+              <span id="file-name" class="file-name">Dosya seçilmedi</span>
+            </div>
+            <button class="btn btn-primary submit-button" type="submit">Gönder</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
 {% endblock %}
 
 {% block footer %}

@@ -4,14 +4,20 @@
     {% include "account/header.html" %}
 {% endblock %}
 {% block content %}
-  <div class="joblist-container" style="margin-top: 100px;">
-    <h1 class="joblist-h1">Job List</h1>
-    <p class="joblist-p">You have 30 days to download your reports, after that period the files will be deleted forever.</p>
-    <div class="search-bar">
-      <label for="search">Search:</label>
-      <input type="text" id="search" name="search">
-    </div>
-    <table class="job-list">
+<style>
+  body,
+  html {
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+  }
+</style>
+
+  <div class="joblist-container mt-5">
+    <h1 class="joblist-h1">Sonuçlar</h1>
+    <p class="joblist-p"></p>
+    <table class="table">
       <thead>
         <tr>
           <th>ID</th>
@@ -27,16 +33,17 @@
           <td>{{ job.upload_date }}</td>
           <td>
             {% if job.processing_status == "Tamamlandı" %}
-              <span class="status success">Tamamlandı</span>
+              <span class="badge bg-success px-3 py-2">Tamamlandı</span>
             {% elif job.processing_status == "İşleniyor" %}
-              <span class="status pending">İşleniyor</span>
+              <span class="badge bg-warning px-3 py-2">İşleniyor</span>
             {% elif job.processing_status == "Başarısız" %}
-              <span class="status failed">Başarısız</span>
+              <span class="badge bg-danger px-3 py-2">Başarısız</span>
             {% endif %}
           </td>
+          
           <td>
             {% if job.output %}
-              <a href="{{ job.output.url }}" class="btn btn-sm btn-outline-danger" title="Download PDF Report File">
+              <a href="{{ job.output.url }}" class="btn btn-sm btn-outline-danger" title="Download Report File">
                 <span class="fa fa-download"></span>
               </a>
             {% else %}

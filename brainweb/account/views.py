@@ -54,12 +54,12 @@ def login_request(request):
                 return render(request, "account/submit.html", {"servisler": servisler})
             else:
                 # Kullanıcı doğrulama başarısızsa hata mesajı gönder
-                error = "Kullanıcı adı veya şifre yanlış."
-                return render(request, 'account/login.html', {'form': form, 'error': error})
+                messages.error(request, "Kullanıcı adı veya şifre yanlış.")
+                return render(request, 'account/login.html')
         else:
             # Form geçerli değilse hata mesajı gönder
-            error = "Geçersiz form."
-            return render(request, 'account/login.html', {'form': form, 'error': error})
+            messages.error(request, "Geçersiz form.")
+            return render(request, 'account/login.html')
     else:
         form = EmailAuthenticationForm()  # GET isteğinde yeni form oluştur
     return render(request, 'account/login.html', {'form': form})
@@ -240,8 +240,8 @@ def upload_file_view(request):
 
 @login_required
 def joblist(request):
-    # Mevcut kullanıcının UploadedFile nesnelerini al
-    user_jobs = UploadedFile.objects.filter(user=request.user)  # Kullanıcıya ait işler
+    # Mevcut kullanıcının UploadedFile nesnelerini al ve ID'ye göre azalan sırada sırala
+    user_jobs = UploadedFile.objects.filter(user=request.user).order_by('-id')
     context = {
         'user_jobs': user_jobs,  # Şablona gönderilecek veriler
     }

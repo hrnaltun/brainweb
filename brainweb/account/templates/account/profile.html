@@ -1,91 +1,111 @@
-{% extends "accountbase.html"%}
+{% extends "accountbase.html" %}
 {% load static %}
 {% block header %}
 {% include "account/header.html" %}
 {% endblock %}
 {% block content %}
-<style>
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-    }
-</style>
-<div class="profile-container" style="padding-top: 100px;">
-    <div class="profile-sidebar" style="padding-top: 100px;">
-        <ul>
-            <li><a href="#" id="profileLink" onclick="showProfileForm()">Profil Düzenleme</a></li>
-            <li><a href="#" id="userDetailsLink" onclick="showUserDetails()">Kullanıcı Oturum Ayrıntıları</a></li>
-            <li><a href="#" id="changePasswordLink" onclick="showChangePasswordForm()">Şifre Değiştirme</a></li>
-            <li><a href="#" id="deleteAccountLink" onclick="showDeleteAccountForm()">Hesabı Silme</a></li>
-        </ul>
-    </div>
-    <div class="profile-content">
-        <div id="profileForm" class="profile-form">
-            <h2>Profil Düzenleme</h2>
-            <form method="post" action="{% url 'update_profile' %}">
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="profileLink" href="#" onclick="showProfileForm()">Profil Düzenleme</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="userDetailsLink" href="#" onclick="showUserDetails()">Kullanıcı Oturum Ayrıntıları</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="changePasswordLink" href="#" onclick="showChangePasswordForm()">Şifre Değiştirme</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="deleteAccountLink" href="#" onclick="showDeleteAccountForm()">Hesabı Silme</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                <div id="profileForm" class="profile-form">
+                    <h2>Profil Düzenleme</h2>
+                    <form method="post" action="{% url 'update_profile' %}">
+                        {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">İsim:</label>
+                            <input type="text" class="form-control" id="fname" name="fname" value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Soyisim:</label>
+                            <input type="text" class="form-control" id="lname" name="lname" value="{{ user.last_name }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Profili Güncelle</button>
+                    </form>
                 </div>
-                {% endif %}
-                {% csrf_token %}
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" required><br><br>
-                <label for="fname">İsim:</label>
-                <input type="text" id="fname" name="fname" value="{{ user.first_name }}" required><br><br>
-                <label for="lname">Soyisim:</label>
-                <input type="text" id="lname" name="lname" value="{{ user.last_name }}" required><br><br>
-                <button type="submit" class="button">Profil Güncelle</button>
-            </form>
-        </div>
-        <div id="userDetails" class="user-details" style="display:none;">
-            <h2>Kullanıcı Oturum Ayrıntıları</h2>
-            <p><strong>İsim:</strong> {{ user.first_name }}</p>
-            <p><strong>Soyisim:</strong> {{ user.last_name }}</p>
-            {% if user.is_staff %}
-            <p><strong>Rol:</strong> Admin </p>
-            {% else %}
-            <p><strong>Rol:</strong> Kullanıcı</p>
-            {% endif %}
-            <p><strong>Günlük Maksimum Yükleme Limiti:</strong> 10</p>
-            <p><strong>Bugünkü Yüklemelerin Sayısı:</strong> 5</p>
-        </div>
-        <div id="changePasswordForm" class="change-password-form" style="display:none;">
-            <h2>Şifre Değiştirme</h2>
-            <form method="post" action="{% url 'change_password' %}">
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
+                <div id="userDetails" class="user-details" style="display:none;">
+                    <h2>Kullanıcı Oturum Ayrıntıları</h2>
+                    <p><strong>İsim:</strong> {{ user.first_name }}</p>
+                    <p><strong>Soyisim:</strong> {{ user.last_name }}</p>
+                    {% if user.is_staff %}
+                    <p><strong>Rol:</strong> Admin </p>
+                    {% else %}
+                    <p><strong>Rol:</strong> Kullanıcı</p>
+                    {% endif %}
+                    <p><strong>Günlük Maksimum Yükleme Limiti:</strong> 10</p>
+                    <p><strong>Bugünkü Yüklemelerin Sayısı:</strong> 5</p>
                 </div>
-                {% endif %}
-                {% csrf_token %}
-                <label for="newPassword">Yeni Şifre:</label>
-                <input type="password" id="newPassword" name="newPassword" required><br><br>
-                <label for="confirmPassword">Şifre Onayla:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
-                <button type="submit" class="button">Şifre Değiştir</button>
-            </form>
-        </div>
-        <div id="deleteAccountForm" class="delete-account-form" style="display:none;">
-            <h2>Hesabı Silme</h2>
-            <form method="post" action="{% url 'delete_account' %}">
-                {% csrf_token %}
-                <label for="deleteEmail">E-mail:</label>
-                <input type="email" id="deleteEmail" name="deleteEmail" required><br><br>
-                <label for="deletePassword">Şifre:</label>
-                <input type="password" id="deletePassword" name="deletePassword" required><br><br>
-                <button type="submit" class="button">Hesabı Sil</button>
-            </form>
+                <div id="changePasswordForm" class="change-password-form" style="display:none;">
+                    <h2>Şifre Değiştirme</h2>
+                    <form method="post" action="{% url 'change_password' %}">
+                        {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="newPassword">Yeni Şifre:</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Şifre Onayla:</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Şifre Değiştir</button>
+                    </form>
+                </div>
+                <div id="deleteAccountForm" class="delete-account-form" style="display:none;">
+                    <h2>Hesabı Silme</h2>
+                    <form method="post" action="{% url 'delete_account' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="deleteEmail">E-mail:</label>
+                            <input type="email" class="form-control" id="deleteEmail" name="deleteEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deletePassword">Şifre:</label>
+                            <input type="password" class="form-control" id="deletePassword" name="deletePassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Hesabı Sil</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

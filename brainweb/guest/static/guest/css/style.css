@@ -22,7 +22,7 @@ header {
 }
 
 footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   background-color: #5e5e5e;
   padding-bottom: 3px;
@@ -140,6 +140,51 @@ footer {
   margin-bottom: 10px;
 }
 
+/* Hizmetler detay sayfası  */
+.service-detail-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.service-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* Mobilde daha iyi görünüm için */
+}
+
+.service-info img {
+  margin-right: 15px;
+  margin-bottom: 10px;
+  /* Mobilde daha iyi görünüm için */
+}
+
+.service-detail-container .feedback {
+  margin-top: 30px;
+}
+
+.service-detail-container .button {
+  margin-top: 50px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+
 @media (max-width: 768px) {
   .hero-container {
     padding-top: 50%;
@@ -181,7 +226,7 @@ footer {
   .services-image {
     margin-top: 3%;
     /* Üstten %3 boşluk */
-    max-width: 50%;
+    max-width: 56%;
     /* Maksimum genişlik %50 */
   }
 
@@ -244,56 +289,14 @@ footer {
     margin-top: 5%; /* Butonun üst boşluğu yüzde bazında ayarlandı */
     background-color: #4CAF50;
     color: white;
-    padding: 1% 2%; /* Padding yüzde bazında ayarlandı */
+    padding: 3% 5%; /* Padding yüzde bazında ayarlandı */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1.5vw; /* Font büyüklüğü vw (viewport width) birimine göre ayarlandı */
+    font-size: 4vw; /* Font büyüklüğü vw (viewport width) birimine göre ayarlandı */
     border-radius: 5px;
     cursor: pointer;
     position: relative;
     z-index: 2;
   }
-}
-
-/* Hizmetler detay sayfası  */
-.service-detail-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.service-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  /* Mobilde daha iyi görünüm için */
-}
-
-.service-info img {
-  margin-right: 15px;
-  margin-bottom: 10px;
-  /* Mobilde daha iyi görünüm için */
-}
-
-.service-detail-container .feedback {
-  margin-top: 30px;
-}
-
-.service-detail-container .button {
-  margin-top: 50px;
-  background-color: #4CAF50;
-  color: white;
-  padding: 15px 25px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
 }

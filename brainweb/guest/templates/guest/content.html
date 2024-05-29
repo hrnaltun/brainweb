@@ -27,10 +27,15 @@
 <div class="mission-container text-center">
   <h1 class="text-center ">Misyonumuz</h1>
   <div class="text-center mb-5 mt-3">
-      <p>Brainweb platformu çevrimiçi açık bir MRI beyin hacim ölçümü sistemidir. Misyonumuz, dünyanın her yerindeki araştırmacıların, karmaşık yazılım paketlerini öğrenmeye veya yerel sitelerinde pahalı hesaplama altyapılarına sahip olmaya gerek kalmadan, MRI verilerinden otomatik olarak hacimsel beyin bilgisi elde etmelerine yardımcı olmaktır.</p>
-      <p>Brainweb platformu tam otomatik olarak çalışmakta olup herhangi bir insan müdahalesine gerek kalmadan birkaç dakika içerisinde beyin analizi yapabilmektedir. Şu anda farklı beyin alanlarını ve hastalıklarını analiz eden boru hatları kurduk.</p>
-      <p>Bu çevrimiçi platform, ticari olmayan ve tıbbi olmayan amaçlar için ücretsizdir (yalnızca araştırma).</p>
-      <p>İşbirliği arıyoruz, lütfen bizimle herhangi bir geri bildirimde bulunarak iletişime geçin: team@brainweb.net</p>
+    <p>Brainweb platformu çevrimiçi açık bir MRI beyin hacim ölçümü sistemidir. Misyonumuz, dünyanın her yerindeki
+      araştırmacıların, karmaşık yazılım paketlerini öğrenmeye veya yerel sitelerinde pahalı hesaplama altyapılarına
+      sahip olmaya gerek kalmadan, MRI verilerinden otomatik olarak hacimsel beyin bilgisi elde etmelerine yardımcı
+      olmaktır.</p>
+    <p>Brainweb platformu tam otomatik olarak çalışmakta olup herhangi bir insan müdahalesine gerek kalmadan birkaç
+      dakika içerisinde beyin analizi yapabilmektedir. Şu anda farklı beyin alanlarını ve hastalıklarını analiz eden
+      boru hatları kurduk.</p>
+    <p>Bu çevrimiçi platform, ticari olmayan ve tıbbi olmayan amaçlar için ücretsizdir (yalnızca araştırma).</p>
+    <p>İşbirliği arıyoruz, lütfen bizimle herhangi bir geri bildirimde bulunarak iletişime geçin: team@brainweb.net</p>
   </div>
 </div>
 
@@ -38,13 +43,13 @@
 <div class="services-container row">
   {% for servis in servisler %}
   <div class="col-md-3 mb-4 services-box">
-      <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
-          <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf" >
-          <div class="card-body">
-              <h5 class="card-title">{{ servis.adı }}</h5>
-              <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
-          </div>
+    <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
+      <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
+      <div class="card-body">
+        <h5 class="card-title">{{ servis.adı }}</h5>
+        <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
       </div>
+    </div>
   </div>
   {% endfor %}
 </div>
@@ -64,7 +69,8 @@
   <div class="mx-auto steps" style="margin-left: 10px !important;">
     <img src="{% static 'guest/img/process.png' %}" class="img-fluid mb-3" alt="İşleme">
     <h2>İşleme</h2>
-    <p>Verileriniz yüklendikten sonra volBrain isteğinizi mümkün olan en kısa sürede işleme alacak ve sonuçları içeren bir rapor oluşturacaktır.</p>
+    <p>Verileriniz yüklendikten sonra volBrain isteğinizi mümkün olan en kısa sürede işleme alacak ve sonuçları içeren
+      bir rapor oluşturacaktır.</p>
   </div>
   <div class="mx-auto steps" style="margin-left: 10px !important; ">
     <img src="{% static 'guest/img/result.png' %}" class="img-fluid mb-3" alt="Sonuç">
@@ -73,23 +79,23 @@
   </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  var backgrounds = ['{% static "guest\\img\\indir1.jpg" %}']; // Arka plan resimlerinin dosya adları
-  var randomIndex = Math.floor(Math.random() * backgrounds.length); // Rastgele bir indeks seç
-  var selectedBackground = backgrounds[randomIndex]; // Seçilen arka plan resmi
+  document.addEventListener("DOMContentLoaded", function () {
+    var backgrounds = ['{% static "guest\\img\\indir1.jpg" %}']; // Arka plan resimlerinin dosya adları
+    var randomIndex = Math.floor(Math.random() * backgrounds.length); // Rastgele bir indeks seç
+    var selectedBackground = backgrounds[randomIndex]; // Seçilen arka plan resmi
 
-  document.body.style.backgroundImage = "url('" + selectedBackground + "')"; // body elementinin arka plan resmini ayarla
-});
-
+    document.body.style.backgroundImage = "url('" + selectedBackground +
+    "')"; // body elementinin arka plan resmini ayarla
+  });
 </script>
 <script>
   // JavaScript ile her bir kutunun tıklanabilir olmasını sağlayalım
   const boxes = document.querySelectorAll('.box');
   boxes.forEach(box => {
-      box.addEventListener('click', () => {
-          const link = box.querySelector('a').getAttribute('href');
-          window.location.href = link;
+    box.addEventListener('click', () => {
+      const link = box.querySelector('a').getAttribute('href');
+      window.location.href = link;
 
-      });
+    });
   });
 </script>

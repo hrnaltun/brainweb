@@ -5,36 +5,33 @@
 {% endblock %}
 {% block content %}
 <style>
-    body {
-        background-color: white;
+    .account-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
-    .account-container form {
-        margin-bottom:500px ;
-        margin-right: 100px;
+
+    /* "E-" kelimesinin alt satıra geçmemesi için */
+    .form-label {
+        white-space: nowrap;
     }
 </style>
 
 <section class="container">
     <div class="account-container">
         <div class="form-container">
-            
-            <form method="POST">
+
+            <form method="POST" class="login-form">
                 {% csrf_token %}
-                <h1 style="margin-left: 100px;">Şifremi Unuttum</h1>
-                <div class=" required">
-                    <div class="col col-md-3 col-lg-2">
-                        <label for="mail">E-Posta</label>
-                    </div>
-                    <div class="col col-md-9 col-lg-10">
-                        <input style="background-color: #bbcfe9; width: 300px;" class="form-control" id="mail"
-                            name="mail" type="email" value="">
-                    </div>
+                <h1 class="text-white text-center mb-4">Şifremi Unuttum</h1>
+                <div class="text-white form-group row required">
+                    <label for="mail" class="col">E-Posta</label>
+                    <input type="email" class="form-control" id="mail" name="mail">
                 </div>
-                <button style="margin-left: 110px; width: 300px; margin-top: 30px;" class="opacity">Kayıt Ol</button>
+                <button type="submit" class="btn btn-primary btn-block opacity">Gönder</button>
             </form>
         </div>
     </div>
 </section>
-
-
 {% endblock %}
