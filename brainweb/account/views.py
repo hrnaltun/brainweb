@@ -196,21 +196,26 @@ def upload_file_view(request):
             messages.error(request, "Dosya seçilmedi.")
             return render(request, "account/submit.html", {"servisler": servisler})
 
-        # İlk başta UploadedFile nesnesini oluştur ve benzersiz bir ad ver
         unique_id = uuid.uuid4()
         original_filename = uploaded_file.name
-        file_extension = os.path.splitext(original_filename)[1]
         
-        # Dosya uzantısını kontrol et
-        if file_extension not in [".nii", ".gz", ".mha"]:
+        # Handling the special case for '.nii.gz'
+        if original_filename.endswith('.nii.gz'):
+            file_without_extension = original_filename[:-7]  # Remove .nii.gz
+            file_extension = '.nii.gz'
+        else:
+            file_without_extension, file_extension = os.path.splitext(original_filename)
+
+        if file_extension not in [".nii", ".gz", ".mha", ".nii.gz"]:
             messages.error(request, "Dosya uzantısı doğru değil. Lütfen .nii, .nii.gz veya .mha dosyası yükleyin.")
             return render(request, "account/submit.html", {"servisler": servisler})
 
-        # Yeni dosya adını uzantıya göre belirle
-        if file_extension == ".mha":
-            new_file_name = f"{str(unique_id)[:4]}.mha"  # .mha dosyaları orijinal adını korur
+        # Check if the file name already exists in the database
+        existing_file = UploadedFile.objects.filter(file__icontains=original_filename).first()
+        if existing_file:
+            new_file_name = f"{file_without_extension}_{str(unique_id)[:3]}{file_extension}"
         else:
-            new_file_name = f"{str(unique_id)[:4]}.nii.gz"  # Diğerleri benzersiz ad alır
+            new_file_name = f"{file_without_extension}{file_extension}"
 
         new_uploaded_file = UploadedFile(
             user=request.user,
@@ -221,7 +226,6 @@ def upload_file_view(request):
         new_uploaded_file.file.name = new_file_name
         new_uploaded_file.save()
 
-        # Dosya yolunu kontrol et
         file_path = new_uploaded_file.file.path
         if not os.path.exists(file_path):
             new_uploaded_file.processing_status = "Başarısız"
@@ -229,13 +233,11 @@ def upload_file_view(request):
             messages.error(request, "Dosya yolu geçerli değil")
             return render(request, "account/submit.html", {"servisler": servisler})
 
-        # Eğer dosya geçerli ve mevcutsa, Celery görevini tetikle
         process_uploaded_file.delay(new_uploaded_file.id, servis_id)
 
         messages.success(request, f"Dosya '{new_file_name}' başarıyla yüklendi. Sonuçlar sayfasından görebilirsiniz.")
         return render(request, "account/submit.html", {"servisler": servisler})
 
-    # GET istekleri için veri döndür
     return render(request, "account/submit.html", {"servisler": servisler})
 
 @login_required

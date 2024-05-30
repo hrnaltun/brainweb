@@ -39,20 +39,23 @@
   </div>
 </div>
 
-<h1 class="text-center mb-5 mt-5">Hizmetlerimiz</h1>
-<div class="services-container row">
-  {% for servis in servisler %}
-  <div class="col-md-3 mb-4 services-box">
-    <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
-      <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
-      <div class="card-body">
-        <h5 class="card-title">{{ servis.adı }}</h5>
-        <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
+<div class="container">
+  <h1 class="text-center mb-5 mt-5">Hizmetlerimiz</h1>
+  <div class="row services-container">
+    {% for servis in servisler %}
+    <div class="col-md-3 mb-4 services-box">
+      <div class="h-100" onclick="window.location.href = '/guest/servicedetail/{{ servis.id }}';">
+        <img class="card-img-top services-image" src="{{ servis.resim_kücük.url }}" alt="Fotoğraf">
+        <div class="card-body">
+          <h5 class="card-title">{{ servis.adı }}</h5>
+          <p class="card-text text-center">{{ servis.açıklama_kısa }}</p>
+        </div>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
+
 
 <h1 class="text-center my-5">Nasıl Çalışır?</h1>
 <div class="how-it-works-section row text-center">
@@ -64,7 +67,7 @@
   <div class="mx-auto steps" style="margin-left: 10px !important;">
     <img src="{% static 'guest/img/upload.png' %}" class="img-fluid mb-3" alt="Yükleme">
     <h2>Yükleme</h2>
-    <p>İkinci olarak, sıkıştırılmış anonimleştirilmiş beyin MRI verilerinizi NIFTI formatında yükleyin.</p>
+    <p>İkinci olarak, sıkıştırılmış anonimleştirilmiş beyin MRI verilerinizi NIFTI veya MHA formatında yükleyin.</p>
   </div>
   <div class="mx-auto steps" style="margin-left: 10px !important;">
     <img src="{% static 'guest/img/process.png' %}" class="img-fluid mb-3" alt="İşleme">

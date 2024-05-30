@@ -89,6 +89,7 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 }
 
 .services-image {
@@ -110,6 +111,9 @@ footer {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   /* Her zaman görünen hafif gölge */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .services-box:hover {
@@ -589,6 +593,7 @@ input[type="file"].visually-hidden {
     top: 6%;
     /* Yükseklik yarısında başlaması için */
     transform: translateY(-50%);
+    margin-bottom: 100px;
   }
 
   /* Hizmetler detay sayfası */
