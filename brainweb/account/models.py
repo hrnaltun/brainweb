@@ -8,7 +8,8 @@ class UploadedFile(models.Model):
     file = models.FileField(upload_to='uploads/')  # Dosyanın saklandığı yolu belirtir
     upload_date = models.DateTimeField(default=timezone.now)  # Dosyanın yüklendiği zamanı kaydeder
     processing_status = models.CharField(max_length=50, default='İşleniyor')  # İşleme durumunu tutar
-    output = models.FileField(upload_to='outputs/', null=True, blank=True)  # İşlem sonucu PDF dosyası
+    output = models.FileField(upload_to='outputs/', null=True, blank=True)  # İşlem sonucu nii.gz dosyası
+    output_pdf = models.FileField(upload_to='outputs/', null=True, blank=True)  # İşlem sonucu PDF dosyası
     objects = models.Manager()
     
     def __str__(self):

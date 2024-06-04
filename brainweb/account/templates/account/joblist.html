@@ -46,6 +46,11 @@
               <a href="{{ job.output.url }}" class="btn btn-sm btn-outline-danger" title="Download Report File">
                 <span class="fa fa-download"></span>
               </a>
+            {% endif %}
+            {% if job.output_pdf %}
+              <a href="{{ job.output_pdf.url }}" class="btn btn-sm btn-outline-danger" title="Download Report File">
+                <span class="fas fa-file-pdf"></span>
+              </a>
             {% else %}
               Hazır değil
             {% endif %}

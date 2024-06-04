@@ -16,6 +16,7 @@ class Servis(models.Model):
     aktif_pasif = models.BooleanField(default=True)
     model_py_dosyası = models.FileField(upload_to=get_upload_path, default='', blank=True, null=True)  # Model Python dosyasını saklamak için
     model_pth_dosyası = models.FileField(upload_to=get_upload_path, default='', blank=True, null=True)  # Model .pth dosyasını saklamak için
+    pdf_oluştur = models.BooleanField(default=False)  # PDF çıktısı verilip verilmeyeceğini belirler
     objects = models.Manager()
 
     def __str__(self):

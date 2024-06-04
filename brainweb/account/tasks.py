@@ -1,5 +1,6 @@
 from celery import shared_task
 from .models import UploadedFile
+from guest.models import Servis
 import os
 import importlib
 from django.conf import settings
@@ -10,6 +11,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def process_uploaded_file(uploaded_file_id, servis_id):
     uploaded_file_obj = UploadedFile.objects.get(id=uploaded_file_id)
     file_path = uploaded_file_obj.file.path
+
+    # Get the Servis object to check if PDF generation is required
+    try:
+        servis = Servis.objects.get(id=servis_id)
+    except Servis.DoesNotExist:
+        uploaded_file_obj.processing_status = "Başarısız"
+        uploaded_file_obj.save()
+        return f"Servis bulunamadı: {servis_id}"
 
     # Determine the model path based on servis_id
     model_dir = os.path.join(BASE_DIR, 'model_files', str(servis_id))
@@ -29,7 +38,14 @@ def process_uploaded_file(uploaded_file_id, servis_id):
     module_path = f"model_files.{servis_id}.model"
     try:
         model_module = importlib.import_module(module_path)
-        result = model_module.main(file_path, model_path, output_path)
+
+        if servis.pdf_oluştur:
+            pdf_output_filename = f"{filename_without_extension}_output.pdf"
+            pdf_output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', pdf_output_filename)
+            result, result_pdf = model_module.main(file_path, model_path, output_path, pdf_output_path)
+        else:
+            result= model_module.main(file_path, model_path, output_path)
+
     except ModuleNotFoundError:
         uploaded_file_obj.processing_status = "Başarısız"
         uploaded_file_obj.save()
@@ -43,10 +59,12 @@ def process_uploaded_file(uploaded_file_id, servis_id):
         uploaded_file_obj.save()
         return f"Bir hata oluştu: {str(e)}"
 
-    # result doğrudan output_path olmalı
+    # Check if the result path exists
     if result and os.path.exists(result):
         uploaded_file_obj.output = result
         uploaded_file_obj.processing_status = "Tamamlandı"
+        if servis.pdf_oluştur and result_pdf and os.path.exists(result_pdf):
+            uploaded_file_obj.output_pdf = result_pdf
         uploaded_file_obj.save()
         return "Görev başarıyla tamamlandı"
     else:
