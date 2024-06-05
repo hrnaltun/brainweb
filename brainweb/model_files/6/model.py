@@ -3,6 +3,7 @@ import numpy as np
 import SimpleITK as sitk
 import os
 from skimage.transform import resize
+from skimage.measure import label
 from torch import nn
 from abc import abstractmethod
 import torch.nn.functional as F
