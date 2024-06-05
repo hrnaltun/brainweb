@@ -215,7 +215,7 @@ def upload_file_view(request):
         if existing_file:
             new_file_name = f"{file_without_extension}_{str(unique_id)[:3]}{file_extension}"
         else:
-            new_file_name = f"{file_without_extension}{file_extension}"
+            new_file_name = f"{file_without_extension}_{str(unique_id)[:3]}{file_extension}"
 
         new_uploaded_file = UploadedFile(
             user=request.user,

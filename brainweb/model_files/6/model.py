@@ -8,6 +8,79 @@ from abc import abstractmethod
 import torch.nn.functional as F
 import sys
 import zipfile
+import nibabel as nib
+from fpdf import FPDF
+from fpdf.enums import XPos, YPos
+from mayavi import mlab
+
+# PDF ve 3D görselleştirme fonksiyonlarını ekleyin
+def load_nii_file(file_path):
+    try:
+        return nib.load(file_path)
+    except Exception as e:
+        print(f"Error loading NIfTI file: {e}")
+        return None
+
+def plot_and_save_3d(image_data):
+
+    x, y, z = np.indices(image_data.shape)
+
+    angles = [(90, 90, 'On'), (0, 90, 'Yan'), (0, 0, 'Ust')]  # Ön, yan ve üst bakış açıları
+
+    for i, (azimuth, elevation, view_name) in enumerate(angles, start=1):
+        fig = mlab.figure(size=(1000, 800), bgcolor=(1, 1, 1))
+        src = mlab.pipeline.scalar_field(image_data)
+        src.spacing = [1, 1, 1]
+        surf = mlab.pipeline.iso_surface(src, opacity=0.5, colormap='inferno')
+
+        # Işıklandırma ayarları
+        surf.actor.property.interpolation = 'flat'
+        surf.actor.property.specular = 0
+        surf.actor.property.specular_power = 0
+
+        # Kontur plotları
+        mlab.contour3d(image_data, contours=10)
+
+        mlab.view(azimuth=azimuth, elevation=elevation, distance='auto')
+
+        mlab.savefig(f"/3d_image_{view_name}.png", magnification=2)  # Saydam arka planı kullan
+        mlab.close()
+
+def calculate_volume(image_data):
+    vessel_volume = np.sum(image_data > 0)
+    total_volume = np.prod(image_data.shape)
+    return vessel_volume, total_volume
+
+def create_pdf_with_3d_slices(vessel_volume, total_volume, pdf_filename):
+    pdf = FPDF()
+
+    pdf.add_page()
+
+    # Damar hacmi ve genel hacim bilgilerini ilk sayfaya ekle
+    pdf.set_font("Helvetica", size=12)
+    pdf.cell(200, 10, text="Damar Hacmi / Genel Hacim Orani", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Damar Hacmi: {vessel_volume}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Genel Hacim: {total_volume}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Hacim Orani: {vessel_volume / total_volume:.4f}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+
+    angles = ['On', 'Yan', 'Ust']  # Görüntü adları
+
+    for i, view_name in enumerate(angles, start=1):
+        if i == 1:
+            # İlk sayfada ilk fotoğrafı ekle
+            pdf.cell(200, 10, text=f"3B Görüntü {view_name}", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.image(f"\\3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
+        else:
+            pdf.add_page()
+            pdf.set_font("Helvetica", size=12)
+            pdf.cell(200, 10, text=f"3B Görüntü {view_name}", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.image(f"\\3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
+
+        # PNG dosyalarını sil
+        os.remove(f"\\3d_image_{view_name}.png")
+
+    pdf.output(pdf_filename)
+
 
 def apply_bet(img, bet, out_fname):
     img_itk = sitk.ReadImage(img)
@@ -698,25 +771,33 @@ class Network(nn.Module):
         else:
             return seg_outputs[-1]
                 
-def main(image_path, model_path, output_path):
+def main(image_path, model_path, output_path,pdf_output_path):
     try:
         config = HD_BET_Config  # HD_BET_Config değişkeninin doğru şekilde tanımlandığını varsayıyorum
 
         # İşlemi başlat
         result=run_hd_bet(image_path, output_path,model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
 
-        return result
+        nii_img = load_nii_file(output_path)
+        if nii_img is not None:
+            image_data = nii_img.get_fdata()
+
+            vessel_volume, total_volume = calculate_volume(image_data)
+            plot_and_save_3d(image_data)
+            create_pdf_with_3d_slices(vessel_volume, total_volume, pdf_filename=pdf_output_path)
+        return result,pdf_output_path
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 4:
-        print("Usage: python model.py <image_path> <model_path> <output_path>")
+    if len(sys.argv) != 5:
+        print("Usage: python model.py <image_path> <model_path> <output_path> <pdf_output_path>")
         sys.exit(1)
 
     image_path = sys.argv[1]
     model_path = sys.argv[2]
     output_path = sys.argv[3]
+    pdf_output_path = sys.argv[4]
 
-    main(image_path, model_path, output_path)
+    output_path, pdf_output_filename = main(image_path, model_path, output_path, pdf_output_path)
