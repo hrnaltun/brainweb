@@ -20,7 +20,7 @@ from monai.data.utils import decollate_batch
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 from mayavi import mlab
-
+#PDF
 def load_nii_file(file_path):
     try:
         return nib.load(file_path)
@@ -85,7 +85,7 @@ def create_pdf_with_3d_slices(vessel_volume, brain_volume, pdf_filename):
             pdf.image(f"3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
         os.remove(f"3d_image_{view_name}.png")
     pdf.output(pdf_filename)
-
+# Model
 def main(image_path, model_path, output_path, pdf_output_path):
     warnings.filterwarnings('ignore')
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
