@@ -22,6 +22,15 @@ def load_nii_file(file_path):
         print(f"Error loading NIfTI file: {e}")
         return None
 
+def load_mha_file(file_path):
+    try:
+        image = sitk.ReadImage(file_path)
+        image_data = sitk.GetArrayFromImage(image)
+        return image_data, image
+    except Exception as e:
+        print(f"Error loading MHA file: {e}")
+        return None, None    
+
 def plot_and_save_3d(image_data):
 
     x, y, z = np.indices(image_data.shape)
@@ -44,42 +53,48 @@ def plot_and_save_3d(image_data):
 
         mlab.view(azimuth=azimuth, elevation=elevation, distance='auto')
 
-        mlab.savefig(f"/3d_image_{view_name}.png", magnification=2)  # Saydam arka planı kullan
+        mlab.savefig(f"3d_image_{view_name}.png", magnification=2)  # Saydam arka planı kullan
         mlab.close()
 
-def calculate_volume(image_data):
-    vessel_volume = np.sum(image_data > 0)
-    total_volume = np.prod(image_data.shape)
-    return vessel_volume, total_volume
+def calculate_volumes(image_path, image_data):
+    # MHA dosyasını yükleyerek beyin hacmini hesapla
+    image_data, sitk_image = load_mha_file(image_path)
+    if image_data is not None:
+        voxel_dims = sitk_image.GetSpacing()
+        voxel_volume = np.prod(voxel_dims)
+        brain_volume_voxels = np.sum(image_data > 0)
+        brain_volume = brain_volume_voxels * voxel_volume
+    else:
+        voxel_volume = 1  # Default voxel volume to avoid reference error
+        brain_volume = 0
 
-def create_pdf_with_3d_slices(vessel_volume, total_volume, pdf_filename):
+    # Damar hacmini hesapla
+    vessel_threshold = image_data.min() + 0.1 * (image_data.max() - image_data.min())
+    vessel_volume_voxels = np.sum(image_data > vessel_threshold)
+    vessel_volume = vessel_volume_voxels * voxel_volume
+    
+    return vessel_volume, brain_volume
+
+def create_pdf_with_3d_slices(vessel_volume, brain_volume, pdf_filename):
     pdf = FPDF()
-
     pdf.add_page()
-
-    # Damar hacmi ve genel hacim bilgilerini ilk sayfaya ekle
     pdf.set_font("Helvetica", size=12)
-    pdf.cell(200, 10, text="Damar Hacmi / Genel Hacim Orani", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.cell(200, 10, text=f"Damar Hacmi: {vessel_volume}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.cell(200, 10, text=f"Genel Hacim: {total_volume}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.cell(200, 10, text=f"Hacim Orani: {vessel_volume / total_volume:.4f}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-    angles = ['On', 'Yan', 'Ust']  # Görüntü adları
-
+    pdf.cell(200, 10, text="Damar Hacmi / Beyin Hacmi Orani", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Damar Hacmi: {vessel_volume:.2f} mm^3", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Beyin Hacmi: {brain_volume:.2f} mm^3", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(200, 10, text=f"Hacim Orani: {vessel_volume / (brain_volume + 1e-5):.4f}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    
+    angles = ['On', 'Yan', 'Ust']
     for i, view_name in enumerate(angles, start=1):
         if i == 1:
-            # İlk sayfada ilk fotoğrafı ekle
             pdf.cell(200, 10, text=f"3B Görüntü {view_name}", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-            pdf.image(f"\\3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
+            pdf.image(f"3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
         else:
             pdf.add_page()
             pdf.set_font("Helvetica", size=12)
             pdf.cell(200, 10, text=f"3B Görüntü {view_name}", align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-            pdf.image(f"\\3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
-
-        # PNG dosyalarını sil
-        os.remove(f"\\3d_image_{view_name}.png")
-
+            pdf.image(f"3d_image_{view_name}.png", x=10, y=pdf.get_y() + 10, w=180)
+        os.remove(f"3d_image_{view_name}.png")
     pdf.output(pdf_filename)
 
 
@@ -183,7 +198,7 @@ def run_hd_bet(mri_fnames, output_fnames, model_path, device=0,
                     zipf.write(mask_fname, os.path.relpath(mask_fname, base_dir))  # Base directory'e göre dosyayı ekle
 
     print(zip_filename)
-    return zip_filename
+    return zip_filename ,mask_fname
 
 def load_and_preprocess(mri_file):
     images = {}
@@ -777,15 +792,15 @@ def main(image_path, model_path, output_path,pdf_output_path):
         config = HD_BET_Config  # HD_BET_Config değişkeninin doğru şekilde tanımlandığını varsayıyorum
 
         # İşlemi başlat
-        result=run_hd_bet(image_path, output_path,model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
+        result , mask_fname =run_hd_bet(image_path, output_path,model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
 
-        nii_img = load_nii_file(output_path)
+        nii_img = load_nii_file(mask_fname)
         if nii_img is not None:
             image_data = nii_img.get_fdata()
 
-            vessel_volume, total_volume = calculate_volume(image_data)
+            vessel_volume, brain_volume = calculate_volumes(image_path,image_data)
             plot_and_save_3d(image_data)
-            create_pdf_with_3d_slices(vessel_volume, total_volume, pdf_filename=pdf_output_path)
+            create_pdf_with_3d_slices(vessel_volume, brain_volume, pdf_filename=pdf_output_path)
         return result,pdf_output_path
     except Exception as e:
         print(f"An error occurred: {e}")
