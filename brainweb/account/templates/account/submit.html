@@ -20,17 +20,15 @@
     <div class="col-md-12">
       <div class="pipeline-container mt-5">
         <h1 class="text-center">Boru Hattı Seçimi</h1>
-        <div class="row justify-content-center">
+        <div class="pipeline-grid">
           {% for servis in servisler %}
-          <div class="col-md-2">
-            <div class="pipeline-button m-2" data-service-id="{{ servis.id }}" data-service-desc="{{ servis.açıklama }}">
-              <img src="{{ servis.resim_kücük.url }}" alt="{{ servis.adı }}">
-              <span>{{ servis.adı }}</span>
-            </div>
+          <div class="pipeline-button" data-service-id="{{ servis.id }}" data-service-desc="{{ servis.açıklama }}">
+            <img src="{{ servis.resim_kücük.url }}" alt="{{ servis.adı }}">
+            <span>{{ servis.adı }}</span>
           </div>
           {% endfor %}
         </div>
-      </div>
+      </div>      
     </div>
   </div>
   

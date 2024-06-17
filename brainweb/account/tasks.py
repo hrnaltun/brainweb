@@ -24,12 +24,6 @@ def process_uploaded_file(uploaded_file_id, servis_id):
     model_dir = os.path.join(BASE_DIR, 'model_files', str(servis_id))
     model_path = os.path.join(model_dir, 'model.pth')
 
-    if not os.path.exists(model_path):
-        print(f"servis id: {servis_id}")
-        uploaded_file_obj.processing_status = "Başarısız"
-        uploaded_file_obj.save()
-        return f"Model directory: {model_dir} bulunamadı"
-
     filename_without_extension = os.path.splitext(uploaded_file_obj.file.name)[0]
     output_filename = f"{filename_without_extension}_output.nii.gz"
     output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', output_filename)
@@ -42,9 +36,17 @@ def process_uploaded_file(uploaded_file_id, servis_id):
         if servis.pdf_oluştur:
             pdf_output_filename = f"{filename_without_extension}_output.pdf"
             pdf_output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', pdf_output_filename)
-            result, result_pdf = model_module.main(file_path, model_path, output_path, pdf_output_path)
+            
+            if os.path.exists(model_path):
+                result, result_pdf = model_module.main(file_path, model_path, output_path, pdf_output_path)
+            else:
+                result, result_pdf = model_module.main(file_path, output_path, pdf_output_path)
+                
         else:
-            result= model_module.main(file_path, model_path, output_path)
+            if os.path.exists(model_path):
+                result = model_module.main(file_path, model_path, output_path)
+            else:
+                result = model_module.main(file_path, output_path)
 
     except ModuleNotFoundError:
         uploaded_file_obj.processing_status = "Başarısız"

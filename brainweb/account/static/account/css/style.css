@@ -204,9 +204,14 @@ footer {
   transition: box-shadow 0.3s;
 }
 
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* pipeline card sayisini duzenleme*/
+  gap: 20px;
+  width: 100%;
+}
+
 .pipeline-button {
-  flex: 0 0 calc(20% - 20px);
-  /* 5 kutucuk için %20 genişlik */
   max-width: 150px;
   /* Maksimum genişlik */
   text-align: center;
@@ -216,7 +221,6 @@ footer {
   border-radius: 10px;
   cursor: pointer;
   position: relative;
-  /* Dosya yükleme alanını yerleştirmek için */
 }
 
 .pipeline-button img {
@@ -228,7 +232,6 @@ footer {
   /* İmajın boyutunu koru, ancak kesme yapılabilir */
   margin-bottom: 10px;
 }
-
 
 .pipeline-button span {
   margin-top: 5px;
@@ -251,7 +254,6 @@ footer {
   background-color: white;
   text-align: center;
   z-index: 0;
-  /* Geçiş efekti */
 }
 
 .file-upload-label {
@@ -671,6 +673,9 @@ input[type="file"].visually-hidden {
     border-radius: 5px;
     z-index: 0;
   }
+  .pipeline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .pipeline-button {
     flex: 1 1 100%;
@@ -685,6 +690,7 @@ input[type="file"].visually-hidden {
     height: 40px;
     margin-bottom: 5px;
   }
+  
 
   .pipeline-button span {
     margin-top: 3px;
