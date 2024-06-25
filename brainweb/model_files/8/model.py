@@ -1,39 +1,30 @@
 import numpy as np
 import nibabel as nib
-from scipy import ndimage
-from skimage.measure import marching_cubes
-from skimage.morphology import binary_opening, binary_closing, cube
 import os
 from mayavi import mlab
 from fpdf import FPDF
+from scipy.ndimage import gaussian_filter
 
-def extract_skull_mask(MR):
-    # Marching cubes ile yüzey çıkarımı
-    verts, faces, _, _ = marching_cubes(MR, level=0.7 * np.mean(MR), spacing=(1.0, 1.0, 1.0))
-    
-    # Boş bir mask oluştur
-    skull_mask = np.zeros(MR.shape, dtype=bool)
-    
-    # Yüzey noktalarını maske olarak ayarla
-    for i, j, k in verts:
-        skull_mask[int(i), int(j), int(k)] = True
-    
-    # Morfolojik işlemler ile küçük nesneleri temizle ve kapatma işlemi yap
-    skull_mask = binary_closing(skull_mask, footprint=cube(5))
-    skull_mask = binary_opening(skull_mask, footprint=cube(5))
-    
-    # Yoğunluk eşikleme ile cilt bölgesini kaldır
-    high_intensity_mask = MR > np.percentile(MR[skull_mask], 80)
-    skull_mask = skull_mask & high_intensity_mask
+# NIfTI dosyasını okuma ve normalize etme fonksiyonu
+def load_and_normalize_nii(file_path):
+    img = nib.load(file_path)
+    data = img.get_fdata()
+    header = img.header
+    affine = img.affine
+    data = (data - np.min(data)) / (np.max(data) - np.min(data))
+    return data, header, affine
 
-    return skull_mask
+# Yeni eşikleme yöntemi ile kafatası çıkarma fonksiyonu
+def head_strip_thresholdMuStd(data):    
+    # Eşik değerini hesaplama
+    threshold = np.mean(data) + 0.1 * np.std(data)
+    mask = data > threshold
+    return mask
 
-def load_nii_file(file_path):
-    try:
-        return nib.load(file_path)
-    except Exception as e:
-        print(f"Error loading NIfTI file: {e}")
-        return None
+# Sonuçları kaydetme fonksiyonu
+def save_nifti(data, file_path, header, affine):
+    nifti_img = nib.Nifti1Image(data.astype(np.float32), affine, header)
+    nib.save(nifti_img, file_path)
 
 def plot_and_save_3d(image_data):
     angles = [
@@ -54,7 +45,6 @@ def plot_and_save_3d(image_data):
         mlab.savefig(f"3d_image_{view_name}.png", magnification=2)
         mlab.close()
 
-
 def create_pdf_with_3d_slices(pdf_filename):
     pdf = FPDF()
     pdf.add_page()
@@ -72,23 +62,28 @@ def create_pdf_with_3d_slices(pdf_filename):
     pdf.output(pdf_filename)
 
 def main(image_path, output_path, pdf_output_path):
-    # NIfTI dosyasını oku
-    img = nib.load(image_path)
-    MR = img.get_fdata()
+    # NIfTI dosyasının var olup olmadığını kontrol et
+    if os.path.exists(image_path):
+        data, header, affine = load_and_normalize_nii(image_path)
 
-    # Kafatası maskesini elde et
-    skull_mask = extract_skull_mask(MR)
+        # Yumuşatma işlemi
+        data = gaussian_filter(data, sigma=1)
+        
+        # Yeni eşikleme yöntemi ile kafatası çıkarma
+        head_thresholdMuStd = head_strip_thresholdMuStd(data)
+        
+        # MuStd eşikleme sonucunu kaydetme
+        save_nifti(head_thresholdMuStd, output_path, header, affine)
 
-    # Sonucu yeni bir NIfTI dosyasına kaydet
-    new_img = nib.Nifti1Image(skull_mask.astype(np.uint8), img.affine, img.header)
-    nib.save(new_img, output_path)
-    
-    # 3B görüntüleri kaydet
-    plot_and_save_3d(skull_mask)
-    
-    # PDF oluştur
-    create_pdf_with_3d_slices(pdf_output_path)
-    return output_path, pdf_output_path
+        # 3B görüntüleri kaydet
+        plot_and_save_3d(head_thresholdMuStd)
+        
+        # PDF oluştur
+        create_pdf_with_3d_slices(pdf_output_path)
+        return output_path, pdf_output_path
+    else:
+        print(f"Dosya bulunamadı: {image_path}")
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) != 4:
