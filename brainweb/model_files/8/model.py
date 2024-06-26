@@ -28,9 +28,10 @@ def save_nifti(data, file_path, header, affine):
 
 def plot_and_save_3d(image_data):
     angles = [
-        (55, 90, 'Sol'),
-        (105, 90, 'Sag')
-    ]
+        (90, 90, 'On'),   
+        (0, 90, 'Sol'),
+        (0, 0, 'Ust')
+        ]
 
     for azimuth, elevation, view_name in angles:
         fig = mlab.figure(size=(1000, 800), bgcolor=(1, 1, 1))
@@ -44,13 +45,12 @@ def plot_and_save_3d(image_data):
         mlab.view(azimuth=azimuth, elevation=elevation, distance='auto')
         mlab.savefig(f"3d_image_{view_name}.png", magnification=2)
         mlab.close()
-
 def create_pdf_with_3d_slices(pdf_filename):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", size=12)
     
-    angles = ['Sol', 'Sag']
+    angles = [ 'On','Sol', 'Ust']
     for index, view_name in enumerate(angles):
         if index > 0:
             pdf.add_page()  # Add a new page for each view except the first one
