@@ -21,28 +21,28 @@ def process_uploaded_file(uploaded_file_id, servis_id):
         return f"Servis bulunamadı: {servis_id}"
 
     # Determine the model path based on servis_id
-    model_dir = os.path.join(BASE_DIR, 'model_files', str(servis_id))
+    model_dir = os.path.join(BASE_DIR, 'media', 'model_files', str(servis_id))
     model_path = os.path.join(model_dir, 'model.pth')
 
     filename_without_extension = os.path.splitext(uploaded_file_obj.file.name)[0]
     output_filename = f"{filename_without_extension}_output.nii.gz"
-    output_path = os.path.join(settings.MEDIA_ROOT,'outputs', output_filename)
+    output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', output_filename)
 
     # Dynamically import the module and call the main function
     module_path = f"media.model_files.{servis_id}.model"
     try:
         model_module = importlib.import_module(module_path)
-
         if servis.pdf_oluştur:
             pdf_output_filename = f"{filename_without_extension}_output.pdf"
-            pdf_output_path = os.path.join(settings.MEDIA_ROOT,'outputs', pdf_output_filename)
-            
+            pdf_output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', pdf_output_filename)
+
             if os.path.exists(model_path):
                 result, result_pdf = model_module.main(file_path, model_path, output_path, pdf_output_path)
             else:
                 result, result_pdf = model_module.main(file_path, output_path, pdf_output_path)
-                
+
         else:
+
             if os.path.exists(model_path):
                 result = model_module.main(file_path, model_path, output_path)
             else:

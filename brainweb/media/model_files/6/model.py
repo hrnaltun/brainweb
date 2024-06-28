@@ -109,7 +109,7 @@ def apply_bet(img, bet, out_fname):
 
 
 def run_hd_bet(mri_fnames, output_fnames, model_path, device=0,
-               postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False, zip_output=True, output_dir="outputs//uploads"):
+               postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False, zip_output=True, output_dir="media//outputs//uploads"):
 
     torch.backends.cudnn.benchmark = True
     list_of_param_files = [model_path]  # Tek bir model dosyası olduğu için tek bir dosya yolu kullanılıyor
@@ -787,23 +787,24 @@ class Network(nn.Module):
         else:
             return seg_outputs[-1]
                 
-def main(image_path, model_path, output_path,pdf_output_path):
+def main(image_path, model_path, output_path, pdf_output_path):
     try:
-        config = HD_BET_Config  # HD_BET_Config değişkeninin doğru şekilde tanımlandığını varsayıyorum
+        config = HD_BET_Config()  # HD_BET_Config değişkenini doğru şekilde çağırıyorum
 
         # İşlemi başlat
-        result , mask_fname =run_hd_bet(image_path, output_path,model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
+        result, mask_fname = run_hd_bet(image_path, output_path, model_path=model_path, device=0, postprocess=False, do_tta=True, keep_mask=True, overwrite=True, bet=False)
 
         nii_img = load_nii_file(mask_fname)
         if nii_img is not None:
             image_data = nii_img.get_fdata()
 
-            vessel_volume, brain_volume = calculate_volumes(image_path,image_data)
+            vessel_volume, brain_volume = calculate_volumes(image_path, image_data)
             plot_and_save_3d(image_data)
             create_pdf_with_3d_slices(vessel_volume, brain_volume, pdf_filename=pdf_output_path)
-        return result,pdf_output_path
+
+        return result, pdf_output_path
     except Exception as e:
-        print(f"An error occurred: {e}")
+        return f'Bir hata oluştu: {e}'
 
 if __name__ == "__main__":
     import sys
@@ -815,5 +816,4 @@ if __name__ == "__main__":
     model_path = sys.argv[2]
     output_path = sys.argv[3]
     pdf_output_path = sys.argv[4]
-
     output_path, pdf_output_filename = main(image_path, model_path, output_path, pdf_output_path)
