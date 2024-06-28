@@ -4,6 +4,7 @@ import os
 from mayavi import mlab
 from fpdf import FPDF
 from scipy.ndimage import gaussian_filter
+from skimage import measure  # Eklediğimiz kütüphane
 
 # NIfTI dosyasını okuma ve normalize etme fonksiyonu
 def load_and_normalize_nii(file_path):
@@ -14,11 +15,18 @@ def load_and_normalize_nii(file_path):
     data = (data - np.min(data)) / (np.max(data) - np.min(data))
     return data, header, affine
 
-# Yeni eşikleme yöntemi ile kafatası çıkarma fonksiyonu
-def head_strip_thresholdMuStd(data):    
-    # Eşik değerini hesaplama
-    threshold = np.mean(data) + 0.1 * np.std(data)
-    mask = data > threshold
+# Marching Cubes ile kafatası çıkarma fonksiyonu
+def head_strip_marching_cubes(data, level):
+    # Marching cubes ile yüzey çıkarımı
+    verts, _, _, _ = measure.marching_cubes(data, level=level * np.mean(data))
+    
+    # Boş bir mask oluştur
+    mask = np.zeros(data.shape, dtype=bool)
+    
+    # Yüzey noktalarını maske olarak ayarla
+    for i, j, k in verts:
+        mask[int(i), int(j), int(k)] = True
+
     return mask
 
 # Sonuçları kaydetme fonksiyonu
@@ -45,12 +53,13 @@ def plot_and_save_3d(image_data):
         mlab.view(azimuth=azimuth, elevation=elevation, distance='auto')
         mlab.savefig(f"3d_image_{view_name}.png", magnification=2)
         mlab.close()
+
 def create_pdf_with_3d_slices(pdf_filename):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", size=12)
     
-    angles = [ 'On','Sol', 'Ust']
+    angles = ['On', 'Sol', 'Ust']
     for index, view_name in enumerate(angles):
         if index > 0:
             pdf.add_page()  # Add a new page for each view except the first one
@@ -69,14 +78,14 @@ def main(image_path, output_path, pdf_output_path):
         # Yumuşatma işlemi
         data = gaussian_filter(data, sigma=1)
         
-        # Yeni eşikleme yöntemi ile kafatası çıkarma
-        head_thresholdMuStd = head_strip_thresholdMuStd(data)
+        # Marching Cubes ile kafatası çıkarma
+        head_marching_cubes = head_strip_marching_cubes(data, level=0.8)
         
-        # MuStd eşikleme sonucunu kaydetme
-        save_nifti(head_thresholdMuStd, output_path, header, affine)
+        # Marching Cubes sonucunu kaydetme
+        save_nifti(head_marching_cubes, output_path, header, affine)
 
         # 3B görüntüleri kaydet
-        plot_and_save_3d(head_thresholdMuStd)
+        plot_and_save_3d(head_marching_cubes)
         
         # PDF oluştur
         create_pdf_with_3d_slices(pdf_output_path)
