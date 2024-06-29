@@ -17,4 +17,5 @@ urlpatterns = [
     path('service/<int:service_id>/', views.get_service_detail, name='service_detail'),
     path('joblist',views.joblist,name="joblist"),
     path('upload/', views.upload_file_view, name='upload_file'),
+    path('reset/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
 ]

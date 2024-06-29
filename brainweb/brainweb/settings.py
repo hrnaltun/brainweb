@@ -140,3 +140,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Debug modunda konsola yazdır
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Production modunda gerçek SMTP sunucusu kullan
+
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP sunucu adresi, production modunda değiştirin
+EMAIL_PORT = 587  # SMTP sunucu portu, production modunda değiştirin
+EMAIL_USE_TLS = True  # TLS kullanılacak mı?
+EMAIL_HOST_USER = 'brainwebinonu@gmail.com'  # SMTP sunucu kullanıcı adı, production modunda değiştirin
+EMAIL_HOST_PASSWORD = 'harun4434'  # SMTP sunucu parolası, production modunda değiştirin
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Varsayılan gönderen e-posta adresi

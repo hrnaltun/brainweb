@@ -13,6 +13,12 @@ from .tasks import process_uploaded_file
 import uuid
 import os
 from django.core.paginator import Paginator
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 
 
 def register_request(request):
@@ -71,8 +77,62 @@ def logout_request(request):
     return redirect('login')  # Login sayfasına yönlendir
 
 def forgot_request(request):
-    return render(request, "account/forgot.html")  # Unutulan şifre sayfasını göster
+    if request.method == 'POST':
+        email = request.POST.get('mail')
+        user = User.objects.filter(email=email).first()
+        if user:
+            subject = "Şifre Sıfırlama Talebi"
+            email_template_name = "account/password_reset_email.html"
+            if settings.DEBUG:
+                domain = 'localhost:8000'  # Yerel geliştirme için localhost
+            else:
+                domain = 'beyin.inonu.edu.tr'  # Production ortamı için gerçek domain
 
+            c = {
+                "email": user.email,
+                'domain': domain,
+                'site_name': 'Your Site',
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                "user": user,
+                'token': default_token_generator.make_token(user),
+                'protocol': 'http' if settings.DEBUG else 'https',  # DEBUG moduna göre protokol seçimi
+            }
+            email = render_to_string(email_template_name, c)
+            try:
+                send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+            except Exception as e:
+                messages.error(request, f'Error sending email: {e}')
+                return redirect('forgot')
+            messages.success(request, 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Bu e-posta adresine kayıtlı bir kullanıcı bulunamadı.')
+            return redirect('forgot')
+
+    return render(request, "account/forgot.html")
+
+def password_reset_confirm(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            password_confirm = request.POST.get('password_confirm')
+            if password == password_confirm:
+                user.set_password(password)
+                user.save()
+                messages.success(request, 'Şifreniz başarıyla güncellendi. Giriş yapabilirsiniz.')
+                return redirect('login')
+            else:
+                messages.error(request, 'Şifreler uyuşmuyor. Lütfen tekrar deneyin.')
+        return render(request, 'account/password_reset_confirm.html')
+    else:
+        messages.error(request, 'Şifre sıfırlama bağlantısı geçersiz.')
+        return redirect('forgot')
 
 @login_required
 def profile(request):
