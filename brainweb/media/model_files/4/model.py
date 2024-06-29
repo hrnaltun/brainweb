@@ -62,9 +62,9 @@ def generate_3d_visualizations(nesne_array, sonuc, output_dir):
         os.makedirs(output_dir)
 
     # Generate and save 3D visualizations from different angles
-    angles = [(105, 90, 'On', 200), (180, 15, 'Sol', 'auto'), (180, 270, 'Ust', 'auto')]  # Face, side, and top views
+    angles = [(105, 90, 'On', 200), (180, 15, 'Yan', 'auto'), (180, 270, 'Ust', 'auto')]  # Face, side, and top views
     for azimuth, elevation, view_name, distance in angles:
-        fig = mlab.figure(size=(800, 600), bgcolor=(1, 1, 1))  # Set background color to white
+        fig = mlab.figure(size=(1000, 800), bgcolor=(1, 1, 1))  # Set background color to white
         scatter = mlab.points3d(x, y, z, thickness_values, scale_mode='none', scale_factor=1, colormap='viridis')
         mlab.view(azimuth=azimuth, elevation=elevation, distance=distance)
         
@@ -86,7 +86,7 @@ def generate_3d_visualizations(nesne_array, sonuc, output_dir):
 def create_pdf_with_3d_slices(output_dir, pdf_output_path):
     pdf = FPDF()
 
-    for view_name in ['On', 'Sol', 'Ust']:
+    for view_name in ['On', 'Yan', 'Ust']:
         pdf.add_page()
         pdf.set_font("Helvetica", size=12)
         pdf.cell(200, 10, text=f"3B Görüntü {view_name}", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='C')

@@ -12,6 +12,7 @@ from .models import UploadedFile
 from .tasks import process_uploaded_file
 import uuid
 import os
+from django.core.paginator import Paginator
 
 
 def register_request(request):
@@ -244,7 +245,13 @@ def upload_file_view(request):
 def joblist(request):
     # Mevcut kullanıcının UploadedFile nesnelerini al ve ID'ye göre azalan sırada sırala
     user_jobs = UploadedFile.objects.filter(user=request.user).order_by('-id')
+    
+    # Paginator ile sayfalama ekleme
+    paginator = Paginator(user_jobs, 10)  # Her sayfada 10 iş listelenecek
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'user_jobs': user_jobs,  # Şablona gönderilecek veriler
+        'page_obj': page_obj,  # Şablona gönderilecek veriler
     }
     return render(request, "account/joblist.html", context)  # Şablonu ve verileri göster
