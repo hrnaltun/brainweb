@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,10 @@ SECRET_KEY = 'django-insecure-fj+-3fb3v8+o!#9b2h$=bq*p5_zb^kpd8!*@4!klo&1di+oj@_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = []  # Development modunda 
+else:
+    ALLOWED_HOSTS = ['beyin.inonu.edu.tr','127.0.0.1', '10.16.2.42', 'localhost']  # Production modunda
 
 
 # Application definition
@@ -51,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'brainweb.urls'
@@ -113,21 +118,34 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 # Dil ve saat dilimi ayarları
+LANGUAGES = [
+    ('tr', _('Turkish')),
+    ('en', _('English')),
+]
+
 LANGUAGE_CODE = 'tr'  # Türkçe dil kodu
 TIME_ZONE = 'Europe/Istanbul'
 USE_TZ = True  # Zaman dilimi kullanımı
 
 USE_I18N = True
+USE_L10N = True
 
 
+LOCALE_PATHS = (
+    BASE_DIR / 'locale',
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS=[
-    BASE_DIR /'static'
-]
+if DEBUG:
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS=[
+        BASE_DIR /'static'
+    ]
+else:
+    STATIC_URL = '/static'
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

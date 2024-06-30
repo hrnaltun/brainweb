@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+
 <div class="row align-items-center">
     <!-- Logo ve bağlantılar için sütun -->
     <div class="col-4 col-md-2">
@@ -12,33 +14,89 @@
         </button>
     </div>
 
-    <!-- Ana navigasyon bağlantıları -->
+    <!-- Ana navigasyon bağlantıları ve dil değiştirme -->
     <div class="col-md-10 d-none d-sm-flex justify-content-end align-items-center">
-        <a href="{% url 'index_account' %}" class="text-white mx-3">Anasayfa</a>
-        <a href="{% url 'submit_page' %}" class="text-white mx-3">Yükleme</a>
-        <a href="{% url 'joblist' %}" class="text-white mx-3">Sonuçlar</a>
-        <a href="{% url 'profile' %}" class="text-white mx-3">Profil</a>
-        <a href="{% url 'logout' %}" class="text-white mx-3">Çıkış Yap</a>
+        <a href="{% url 'index_account' %}" class="text-white mx-3">{% trans "Anasayfa" %}</a>
+        <a href="{% url 'submit_page' %}" class="text-white mx-3">{% trans "Yükleme" %}</a>
+        <a href="{% url 'joblist' %}" class="text-white mx-3">{% trans "Sonuçlar" %}</a>
+        <a href="{% url 'profile' %}" class="text-white mx-3">{% trans "Profil" %}</a>
+        <a href="{% url 'logout' %}" class="text-white mx-3">{% trans "Çıkış Yap" %}</a>
+
+        <!-- Dil değiştirme butonu -->
+        <button id="language-toggle" class="btn btn-sm btn-link text-white ml-3">
+            {% trans "TR" %}
+        </button>
     </div>
 
     <!-- Hamburger Menü (Mobil) -->
     <div class="col-12 collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="{% url 'index_account' %}" class="nav-link text-white">Anasayfa</a>
+                <a href="{% url 'index_account' %}" class="nav-link text-white">{% trans "Anasayfa" %}</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'submit_page' %}" class="nav-link text-white">Yükleme</a>
+                <a href="{% url 'submit_page' %}" class="nav-link text-white">{% trans "Yükleme" %}</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'joblist' %}" class="nav-link text-white">Sonuçlar</a>
+                <a href="{% url 'joblist' %}" class="nav-link text-white">{% trans "Sonuçlar" %}</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'profile' %}" class="nav-link text-white">Profil</a>
+                <a href="{% url 'profile' %}" class="nav-link text-white">{% trans "Profil" %}</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'logout' %}" class="nav-link text-white">Çıkış Yap</a>
+                <a href="{% url 'logout' %}" class="nav-link text-white">{% trans "Çıkış Yap" %}</a>
             </li>
         </ul>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var languageToggle = document.querySelector('#language-toggle');
+    
+        // Sayfa yüklendiğinde dil bilgisini localStorage'dan al
+        var currentLanguage = localStorage.getItem('selectedLanguage') || "{{ LANGUAGE_CODE }}";
+        setLanguageButtonText(currentLanguage);
+    
+        // Dil değiştirme butonuna tıklama işlemi
+        languageToggle.addEventListener('click', function() {
+            var newLanguage = currentLanguage === 'tr' ? 'en' : 'tr';
+    
+            // Dil bilgisini localStorage'a kaydet
+            localStorage.setItem('selectedLanguage', newLanguage);
+    
+            // Dil değiştirme işlemini gerçekleştir
+            setLanguageButtonText(newLanguage);
+    
+            // AJAX isteği gönderme
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "{% url 'set_language' %}", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
+    
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Dil değiştirme işlemi başarılı.');
+    
+                    // Dil değiştirme işlemi başarılı olduğunda yönlendirme yap
+                    window.location.href = '/' + newLanguage + '/account/submit/';
+                } else {
+                    console.error('Dil değiştirme işlemi başarısız.');
+                }
+            };
+    
+            xhr.onerror = function () {
+                console.error('AJAX hatası');
+            };
+    
+            // POST verilerini gönder
+            xhr.send('language=' + newLanguage);
+        });
+    
+        // Dil değiştirme butonunun metnini ayarlayan fonksiyon
+        function setLanguageButtonText(languageCode) {
+            var languageText = languageCode === 'tr' ? 'TR' : 'EN';
+            languageToggle.textContent = languageText;
+        }
+    });
+    </script>
