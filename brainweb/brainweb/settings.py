@@ -169,5 +169,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # SMTP sunucu adresi, production modunda değişt
 EMAIL_PORT = 587  # SMTP sunucu portu, production modunda değiştirin
 EMAIL_USE_TLS = True  # TLS kullanılacak mı?
 EMAIL_HOST_USER = 'brainwebinonu@gmail.com'  # SMTP sunucu kullanıcı adı, production modunda değiştirin
-EMAIL_HOST_PASSWORD = 'harun4434'  # SMTP sunucu parolası, production modunda değiştirin
+EMAIL_HOST_PASSWORD = 'aevm jwia jkwm zuuy'  # SMTP sunucu parolası, production modunda değiştirin
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Varsayılan gönderen e-posta adresi

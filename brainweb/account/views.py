@@ -97,11 +97,11 @@ def forgot_request(request):
                 'token': default_token_generator.make_token(user),
                 'protocol': 'http' if settings.DEBUG else 'https',  # DEBUG moduna göre protokol seçimi
             }
-            email = render_to_string(email_template_name, c)
+            email_content = render_to_string(email_template_name, c)
             try:
-                send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+                send_mail(subject, '', settings.DEFAULT_FROM_EMAIL, [user.email], html_message=email_content)
             except Exception as e:
-                messages.error(request, f'Error sending email: {e}')
+                messages.error(request, f'E-posta gönderilirken hata oluştu: {e}')
                 return redirect('forgot')
             messages.success(request, 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.')
             return redirect('login')
@@ -110,6 +110,7 @@ def forgot_request(request):
             return redirect('forgot')
 
     return render(request, "account/forgot.html")
+
 
 def password_reset_confirm(request, uidb64, token):
     try:
