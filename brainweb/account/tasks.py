@@ -36,10 +36,8 @@ def process_uploaded_file(uploaded_file_id, servis_id):
                         return f"Modülde 'main' fonksiyonu bulunamadı: {module_path}"
                     run_servis = Servis.objects.get(id=run_servis_id)
                     if run_servis.pdf_oluştur:
-                        print("çalışıyor2")
                         pdf_output_filename = f"{filename_without_extension}_{run_servis_id}_output.pdf"
                         pdf_output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', pdf_output_filename)
-                        print("çalışıyor")
                         if os.path.exists(model_path):
                             result, _ = model_module.main(file_path, model_path, output_path, pdf_output_path)
                         else:
@@ -71,7 +69,7 @@ def process_uploaded_file(uploaded_file_id, servis_id):
             model_path = os.path.join(model_dir, 'model.pth')
 
             filename_without_extension = os.path.splitext(uploaded_file_obj.file.name)[0]
-            output_filename = f"{filename_without_extension}_output.nii.gz"
+            output_filename = f"{filename_without_extension}_{servis_id}_output.nii.gz"
             output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', output_filename)
             module_path = f"media.model_files.{servis_id}.model"
 
@@ -83,17 +81,17 @@ def process_uploaded_file(uploaded_file_id, servis_id):
                     return f"Modülde 'main' fonksiyonu bulunamadı: {module_path}"
                 
                 if servis.pdf_oluştur:
-                    pdf_output_filename = f"{filename_without_extension}_output.pdf"
+                    pdf_output_filename = f"{filename_without_extension}_{servis_id}_output.pdf"
                     pdf_output_path = os.path.join(settings.MEDIA_ROOT, 'outputs', pdf_output_filename)
                     if os.path.exists(model_path):
-                        result, result_pdf = model_module.main(results, model_path, output_path, pdf_output_path)
+                        result, result_pdf = model_module.main(results,file_path, model_path, output_path, pdf_output_path)
                     else:
-                        result, result_pdf = model_module.main(results, output_path, pdf_output_path)
+                        result, result_pdf = model_module.main(results,file_path, output_path, pdf_output_path)
                 else:
                     if os.path.exists(model_path):
-                        result = model_module.main(results, model_path, output_path)
+                        result = model_module.main(results,file_path, model_path, output_path)
                     else:
-                        result = model_module.main(results, output_path)
+                        result = model_module.main(results,file_path, output_path)
 
             except ModuleNotFoundError:
                 uploaded_file_obj.processing_status = "Başarısız"
