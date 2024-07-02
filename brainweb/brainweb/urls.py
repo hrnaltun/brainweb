@@ -18,9 +18,13 @@ urlpatterns += i18n_patterns(
     # Diğer uygulamalarınızın URL'leri
 )
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media and static files only in non-DEBUG mode
 if not settings.DEBUG:
     urlpatterns += [
         re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
         re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     ]
+
+# Additionally, serve media files in DEBUG mode for development convenience
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -889,3 +889,33 @@ input[type="file"].visually-hidden {
   }
 
 }
+
+
+
+/* Responsive adjustments for mobile */
+@media (max-width: 390px) {
+  .joblist-h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .joblist-p {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .table td a {
+    font-size: 10px;
+    padding: 4px;
+  }
+
+  .pagination .page-link {
+    font-size: 12px;
+  }
+}
