@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-30 12:52+0300\n"
+"POT-Creation-Date: 2024-07-04 22:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr "Homepage"
 
 #: .\account\templates\account\header.html:20
 #: .\account\templates\account\header.html:38
-msgid "Yükleme"
-msgstr "Submit"
+msgid "Hizmetler"
+msgstr ""
 
 #: .\account\templates\account\header.html:21
 #: .\account\templates\account\header.html:41
@@ -47,70 +47,13 @@ msgstr ""
 msgid "TR"
 msgstr "TR"
 
-#: .\account\urls.py:11
-msgid "login/"
-msgstr ""
-
-#: .\account\urls.py:12
-msgid "register/"
-msgstr ""
-
-#: .\account\urls.py:13
-msgid "logout/"
-msgstr ""
-
-#: .\account\urls.py:14
-msgid "forgot/"
-msgstr ""
-
-#: .\account\urls.py:15
-msgid "profile/"
-msgstr ""
-
-#: .\account\urls.py:16
-msgid "homepage/"
-msgstr ""
-
-#: .\account\urls.py:17
-msgid "account/servicedetail/<int:servis_id>/"
-msgstr ""
-
-#: .\account\urls.py:18
-msgid "profile/edit/"
-msgstr ""
-
-#: .\account\urls.py:19
-msgid "profile/change-password/"
-msgstr ""
-
-#: .\account\urls.py:20
-msgid "profile/delete-account/"
-msgstr ""
-
-#: .\account\urls.py:21
-msgid "submit/"
-msgstr ""
-
-#: .\account\urls.py:22
-msgid "service/<int:service_id>/"
-msgstr ""
-
-#: .\account\urls.py:23
-msgid "joblist/"
-msgstr ""
-
-#: .\account\urls.py:24
-msgid "upload/"
-msgstr ""
-
-#: .\account\urls.py:25
-msgid "reset/<uidb64>/<token>/"
-msgstr ""
-
-#: .\brainweb\settings.py:119
+#: .\brainweb\settings.py:122
 msgid "Turkish"
 msgstr ""
 
-#: .\brainweb\settings.py:120
+#: .\brainweb\settings.py:123
 msgid "English"
 msgstr ""
+
+#~ msgid "Yükleme"
+#~ msgstr "Submit"
